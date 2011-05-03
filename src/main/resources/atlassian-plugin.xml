@@ -21,7 +21,8 @@
         <description>Mini-gallery displaying a set number of items from Picasa</description>
         <parameters>
             <parameter name="user" type="string" required="true"/>
-            <parameter name="maxEntries" type="int" default="5"/>
+            <parameter name="album" type="string"/>
+            <parameter name="maxEntries" type="string" default="5"/>
             <parameter name="thumbSize" type="int" default="0"/>
             <parameter name="photo" type="string"/>
             <parameter name="randomize" type="boolean"/>

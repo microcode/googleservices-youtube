@@ -104,36 +104,32 @@ public class GalleryExcerptsMacro extends BaseMacro
             }
         }
 
-        int thumbSize = 0;
-
-
-        int maxEntries = -1;
-        int randomize = 0;
+        int maxEntries = 5;
         try
         {
             maxEntries = Integer.parseInt((String)params.get(MAXENTRIES_PARAM));
         }
         catch (NumberFormatException e)
         {
-            throw new MacroException("Invalid value to maxEntries");
         }
         if (maxEntries == -1)
         {
             throw new MacroException("A maximum number of photos must be provided (maxEntries)");
         }
 
+        int thumbSize = 0;
         try
         {
             thumbSize = Integer.parseInt((String)params.get(THUMBSIZE_PARAM));
         }
         catch (NumberFormatException e)
         {
-            throw new MacroException("Invalid value to thumbSize");
         }
 
+        boolean randomize = false;
         try
         {
-            randomize = Integer.parseInt((String)params.get(RANDOMIZE_PARAM));
+            randomize = Boolean.parseBoolean((String)params.get(RANDOMIZE_PARAM));
         }
         catch (NumberFormatException e)
         {
@@ -145,15 +141,21 @@ public class GalleryExcerptsMacro extends BaseMacro
         }
 
         HttpServletRequest request = ServletActionContext.getRequest();
-        String flushCache = null;
+        boolean flushCache = false;
         if (request != null)
         {
-            flushCache = request.getParameter("flush-cache");
+            try
+            {
+                flushCache = Boolean.parseBoolean((String)request.getParameter("flush-cache"));
+            }
+            catch (NumberFormatException e)
+            {
+            }
         }
 
         CacheFactory cacheFactory = (CacheFactory) ContainerManager.getComponent("cacheManager");
         Cache cache = cacheFactory.getCache("se.microcode.confluence.plugin.picasa");
-        if (flushCache != null && "yes".equals(flushCache))
+        if (flushCache)
         {
             cache.removeAll();
         }
@@ -222,7 +224,7 @@ public class GalleryExcerptsMacro extends BaseMacro
             int count = photoIndex - begin;
             int end = (int)Math.min(photos.size(), photoIndex + (maxEntries - count));
 
-            if (randomize > 0)
+            if (randomize)
             {
                 Collections.shuffle(photos);
             }

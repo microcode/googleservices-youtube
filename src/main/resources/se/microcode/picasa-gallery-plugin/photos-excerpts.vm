@@ -1,0 +1,10 @@
+#requireResource("se.microcode.confluence.plugin.picasa-gallery-plugin:picasa-gallery-resources")
+<span class="se-microcode_picasa-gallery-excerpts-thumbnails">
+#foreach ($photo in $photos)
+#if ($url)
+<span><a href="$url?album=$album.id&amp;photo=$photo.id"><img src="$photo.image"/></a></span>
+#else
+<span><img src="$photo.image"/></span>
+#end
+#end
+</span>

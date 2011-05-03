@@ -1,0 +1,18 @@
+#requireResource("se.microcode.confluence.plugin.picasa-gallery-plugin:picasa-gallery-resources")
+#set ($Integer = 0)
+#if ($pageCount && $pageCount > 1)
+<div class="se-microcode_picasa-gallery-pagecount">
+#if ($currPage > 1)
+#set ($prevPage = $currPage - 1)
+<span><a href="${baseUrl}album=$album.id&amp;page=$prevPage">$action.getText("se.microcode.picasa-gallery-plugin.previous")</a>&nbsp;</span>
+#end
+<span>$action.getText("se.microcode.picasa-gallery-plugin.page", [$currPage,$pageCount])</span>
+#if ($currPage < $pageCount)
+#set ($nextPage = $currPage + 1)
+<span>&nbsp;<a href="${baseUrl}album=$album.id&amp;page=$nextPage">$action.getText("se.microcode.picasa-gallery-plugin.next")</a></span>
+#end
+</div>
+#end
+#foreach ($photo in $photos)
+<div class="se-microcode_picasa-gallery-photo"><a href="${baseUrl}album=$album.id&amp;photo=$photo.id"><img src="$photo.image"/></a></div>
+#end

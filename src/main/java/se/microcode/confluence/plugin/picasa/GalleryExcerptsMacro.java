@@ -31,6 +31,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 package se.microcode.confluence.plugin.picasa;
 
+import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.renderer.v2.macro.BaseMacro;
 import com.atlassian.cache.Cache;
 import com.atlassian.cache.CacheFactory;
@@ -68,6 +69,8 @@ public class GalleryExcerptsMacro extends BaseMacro
         return false;
     }
 
+    private SettingsManager settingsManager;
+
     public static final String PICASAUSER_PARAM = "user";
     public static final String ALBUM_PARAM = "album";
     public static final String MAXENTRIES_PARAM = "maxEntries";
@@ -75,6 +78,11 @@ public class GalleryExcerptsMacro extends BaseMacro
     public static final String PHOTO_PARAM = "photo";
     public static final String RANDOMIZE_PARAM = "randomize";
     public static final String PAGE_PARAM = "page";
+
+    public GalleryExcerptsMacro(SettingsManager settingsManager)
+    {
+        this.settingsManager = settingsManager;
+    }
 
     public String execute(Map params, String body, RenderContext renderContext) throws MacroException
     {
@@ -100,7 +108,7 @@ public class GalleryExcerptsMacro extends BaseMacro
 
             if (page != null)
             {
-                url = page.getUrlPath();
+                url = settingsManager.getGlobalSettings().getBaseUrl() + page.getUrlPath();
             }
         }
 

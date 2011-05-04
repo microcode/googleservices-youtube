@@ -1,0 +1,29 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+    </plugin-info>
+
+    <resource type="i18n" name="i18n" location="se.microcode.${project.artifactId}.i18n.AtlassianPlugin"/>
+
+    <macro name="youtube-playlists" class="${project.groupId}.youtube.PlaylistMacro" key="youtube-playlists">
+        <description>Display playlists from Youtube</description>
+        <parameters>
+            <parameter name="user" type="string" required="true"/>
+            <parameter name="pageSize" type="int" default="-1"/>
+        </parameters>
+    </macro>
+
+    <resource type="download" name="images/" location="se/microcode/${project.artifactId}/images/"/>
+
+    <resource type="velocity" name="playlists.vm" location="se/microcode/${project.artifactId}/playlists.vm"/>
+    <resource type="velocity" name="playlist.vm" location="se/microcode/${project.artifactId}/playlist.vm"/>
+
+    <web-resource key="youtube-playlist-resources">
+        <resource type="download" name="style.css" location="se/microcode/${project.artifactId}/style.css">
+            <property key="content-type" value="text/css"/>
+        </resource>
+    </web-resource>
+
+</atlassian-plugin>

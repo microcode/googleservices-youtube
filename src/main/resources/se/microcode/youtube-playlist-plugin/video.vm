@@ -1,0 +1,31 @@
+#requireResource("se.microcode.confluence.plugin.youtube-playlist-plugin:youtube-playlist-resources")
+#if ($pageCount > 1)
+<div class="se-microcode_youtube-playlist-pagecount">
+#if ($prev)
+<span><a href="${baseUrl}playlist=$playlist.id&amp;video=$prev">$action.getText("se.microcode.youtube-playlist-plugin.previous")</a>&nbsp;</span>
+#end
+<span>$action.getText("se.microcode.youtube-playlist-plugin.video", [$currPage,$pageCount])</span>
+#if ($next)
+<span>&nbsp;<a href="${baseUrl}playlist=$playlist.id&amp;video=$next">$action.getText("se.microcode.youtube-playlist-plugin.next")</a></span>
+#end
+</div>
+#end
+
+<div class="se-microcode_youtube-playlist-video-full">
+<object width="640" height="385">
+	<param name="movie" value="http://www.youtube.com/v/${video.id}&fs=1"></param>
+	<param name="allowFullScreen" value="true"></param>
+	<param name="allowscriptaccess" value="always"></param>
+	<embed src="http://www.youtube.com/v/${video.id}&fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="640" height="385"></embed>
+</object>
+</div>
+
+<div class="se-microcode_youtube-playlist-thumbnails">
+#foreach ($thumbnail in $nearby)
+#if ($thumbnail.id == $video.id)
+<span class="se-microcode_youtube-playlist-thumbnail-active"><img src="$thumbnail.image"/></span>
+#else
+<span><a href="${baseUrl}playlist=$playlist.id&amp;video=$thumbnail.id"><img src="$thumbnail.image"/></a></span>
+#end
+#end
+</div>

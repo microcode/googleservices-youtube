@@ -232,7 +232,7 @@ public class PlaylistMacro extends BaseMacro
                 context.put("thumbnails", PlaylistHelper.buildVideoList(thumbnails));
             }
 
-            builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/youtube-playlist-plugin/video.vm", context));
+            builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/youtube/video.vm", context));
         }
         else if ((videoFeed != null) && (videoFeed.videos != null))
         {
@@ -250,7 +250,7 @@ public class PlaylistMacro extends BaseMacro
             context.put("videos", PlaylistHelper.buildVideoList(videoFeed.videos.subList(begin, end)));
             context.put("playlist", PlaylistHelper.buildPlaylist(playlistEntry));
 
-            builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/youtube-playlist-plugin/playlist.vm", context));
+            builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/youtube/playlist.vm", context));
         }
         else if (playlistsFeed.playlists != null)
         {
@@ -267,7 +267,7 @@ public class PlaylistMacro extends BaseMacro
 
             context.put("playlists", PlaylistHelper.buildPlaylists(playlistsFeed.playlists.subList(begin ,end)));
 
-            builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/youtube-playlist-plugin/playlists.vm", context));
+            builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/youtube/playlists.vm", context));
         }
 
         return builder.toString();

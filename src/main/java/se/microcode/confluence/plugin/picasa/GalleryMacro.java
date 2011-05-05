@@ -85,10 +85,10 @@ public class GalleryMacro extends BaseMacro
         {
         }
 
-        int thumbnails = 5;
+        int thumbnailCount = 5;
         try
         {
-            thumbnails = Integer.parseInt((String)params.get(THUMBNAILS_PARAM));
+            thumbnailCount = Integer.parseInt((String)params.get(THUMBNAILS_PARAM));
         }
         catch (NumberFormatException e)
         {
@@ -188,7 +188,7 @@ public class GalleryMacro extends BaseMacro
         }
 
         PhotoEntry photoEntry = null;
-        List<PhotoEntry> nearbyPhotos = null;
+        List<PhotoEntry> thumbnails = null;
         int photoIndex = 0;
         if (photoId != null && albumFeed != null && albumFeed.photos != null)
         {
@@ -197,12 +197,12 @@ public class GalleryMacro extends BaseMacro
                 PhotoEntry photo = albumFeed.photos.get(i);
                 if (photoId.equals(photo.id))
                 {
-                    int begin = (int)Math.max(0, i - Math.floor(thumbnails/2.0f));
-                    int end = (int)Math.min(albumFeed.photos.size(), i + Math.ceil(thumbnails/2.0f));
+                    int begin = (int)Math.max(0, i - Math.floor(thumbnailCount/2.0f));
+                    int end = (int)Math.min(albumFeed.photos.size(), i + Math.ceil(thumbnailCount/2.0f));
 
                     photoEntry = photo;
                     photoIndex = i;
-                    nearbyPhotos = albumFeed.photos.subList(begin, end);
+                    thumbnails = albumFeed.photos.subList(begin, end);
                     break;
                 }
             }
@@ -227,23 +227,23 @@ public class GalleryMacro extends BaseMacro
 
             if (photoIndex > 0)
             {
-                context.put("prevPhoto", albumFeed.photos.get(photoIndex-1).id);
+                context.put("prev", albumFeed.photos.get(photoIndex-1).id);
             }
             if (photoIndex < albumFeed.photos.size()-1)
             {
-                context.put("nextPhoto", albumFeed.photos.get(photoIndex+1).id);
+                context.put("next", albumFeed.photos.get(photoIndex+1).id);
             }
 
             context.put("photo", GalleryHelper.buildPhotoEntry(photoEntry, imageSize));
             context.put("album", GalleryHelper.buildAlbumEntry(albumEntry));
             context.put("pageId", pageId);
 
-            if (nearbyPhotos != null)
+            if (thumbnails != null)
             {
-                context.put("nearby", GalleryHelper.buildPhotoList(nearbyPhotos, 0));
+                context.put("thumbnails", GalleryHelper.buildPhotoList(thumbnails, 0));
             }
 
-            builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/picasa-gallery-plugin/photo.vm", context));
+            builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/picasa/photo.vm", context));
 
         }
         else if (albumFeed != null && albumFeed.photos != null)
@@ -263,7 +263,7 @@ public class GalleryMacro extends BaseMacro
             context.put("album", GalleryHelper.buildAlbumEntry(albumEntry));
             context.put("pageId", pageId);
 
-            builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/picasa-gallery-plugin/photos.vm", context));
+            builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/picasa/photos.vm", context));
         }
         else if (userFeed.albums != null)
         {
@@ -281,7 +281,7 @@ public class GalleryMacro extends BaseMacro
             context.put("albums", GalleryHelper.buildAlbumList(userFeed.albums.subList(begin ,end)));
             context.put("pageId", pageId);
 
-            builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/picasa-gallery-plugin/albums.vm", context));
+            builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/picasa/albums.vm", context));
         }
 
         return builder.toString();

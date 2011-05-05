@@ -6,7 +6,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>se.microcode.confluence.plugin</groupId>
-    <artifactId>youtube-playlist-plugin</artifactId>
+    <artifactId>google-plugin</artifactId>
     <version>1.0</version>
 
     <organization>
@@ -14,8 +14,8 @@
         <url>http://www.microcode.se/</url>
     </organization>
 
-    <name>youtube-playlist-plugin</name>
-    <description>Display youtube playlist feeds in your confluence wiki</description>
+    <name>Google Services</name>
+    <description>Display data from certain google services on your wiki</description>
     <packaging>atlassian-plugin</packaging>
 
     <dependencies>

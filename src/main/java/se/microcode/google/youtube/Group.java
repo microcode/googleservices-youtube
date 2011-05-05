@@ -2,7 +2,7 @@ package se.microcode.google.youtube;
 
 import com.google.api.client.util.Key;
 
-public class VideoGroup
+public class Group
 {
     @Key("media:credit")
     public String credit;

@@ -1,0 +1,24 @@
+#requireResource("se.microcode.confluence.plugin.google-plugin:youtube-playlist-resources")
+<div class="se-microcode_youtube-playlist-crumbs">
+<span><a href="${baseUrl}">$action.getText("se.microcode.google-plugin.youtube.name")</a></span>
+</div>
+#set ($Integer = 0)
+#if ($pageCount && $pageCount > 1)
+<div class="se-microcode_youtube-playlist-pagecount">
+#if ($currPage > 1)
+#set ($prevPage = $currPage - 1)
+<span><a href="${baseUrl}playlist=$playlist.id&amp;page=$prevPage">$action.getText("se.microcode.google-plugin.previous")</a>&nbsp;</span>
+#end
+<span>$action.getText("se.microcode.google-plugin.page", [$currPage,$pageCount])</span>
+#if ($currPage < $pageCount)
+#set ($nextPage = $currPage + 1)
+<span>&nbsp;<a href="${baseUrl}playlist=$playlist.id&amp;page=$nextPage">$action.getText("se.microcode.google-plugin.next")</a></span>
+#end
+</div>
+#end
+#foreach ($video in $videos)
+<div class="se-microcode_youtube-playlist-video">
+<a href="${baseUrl}playlist=$playlist.id&amp;video=$video.id"><img src="$video.image" title="$video.desc"/></a>
+<div class="se-microcode_youtube-playlist-video-info"><a href="${baseUrl}playlist=$playlist.id&amp;video=$video.id">$video.title</a></div>
+</div>
+#end

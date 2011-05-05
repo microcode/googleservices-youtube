@@ -1,4 +1,4 @@
-package se.microcode.google.picasa;
+package se.microcode.google;
 
 import com.google.api.client.util.Key;
 

@@ -37,84 +37,27 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.xml.atom.AtomParser;
 
+import se.microcode.google.Util;
+import se.microcode.google.GoogleHelper;
+
 import java.io.IOException;
 import java.lang.ClassCastException;
 
-public class PicasaHelper
+public class PicasaHelper extends GoogleHelper
 {
     public static UserFeed getUserFeed(String user, Cache cache) throws IOException
     {
-        HttpTransport transport = createTransport();
         Url url = Url.relativeToRoot("feed/api/user/" + user);
-        String key = url.toString();
+        url.kinds = "album";
 
-        UserFeed userFeed = null;
-
-        if (cache != null)
-        {
-            try
-            {
-                userFeed = (UserFeed)cache.get(key);
-            }
-            catch (ClassCastException e)
-            {
-                userFeed = null;
-            }
-        }
-
-        if (userFeed == null)
-        {
-            userFeed = UserFeed.executeGet(transport, url);
-            if ((userFeed != null) && (cache != null))
-            {
-                cache.put(key, userFeed);
-            }
-        }
-        return userFeed;
+        return (UserFeed)getFeed(url, cache, UserFeed.class);
     }
 
     public static AlbumFeed getAlbumFeed(String user, String albumId, Cache cache) throws IOException
     {
-        HttpTransport transport = createTransport();
         Url url = Url.relativeToRoot("feed/api/user/" + user + "/albumid/" + albumId);
-        String key = url.toString();
+        url.kinds = "photo";
 
-        AlbumFeed albumFeed = null;
-        if (cache != null)
-        {
-            try
-            {
-                albumFeed = (AlbumFeed)cache.get(key);
-            }
-            catch (ClassCastException e)
-            {
-                albumFeed = null;
-            }
-        }
-
-        if (albumFeed == null)
-        {
-            albumFeed = AlbumFeed.executeGet(transport, url);
-            if ((albumFeed != null) && (cache != null))
-            {
-                cache.put(key, albumFeed);
-            }
-        }
-        return albumFeed;
-    }
-
-    public static HttpTransport createTransport()
-    {
-        GoogleHeaders headers = new GoogleHeaders();
-        headers.setApplicationName("se.microcode.picasa-gallery-plugin/1.0");
-        headers.gdataVersion = "2";
-
-        AtomParser parser = new AtomParser();
-        parser.namespaceDictionary = Util.NAMESPACE_DICTIONARY;
-
-        HttpTransport transport = new NetHttpTransport();
-        transport.defaultHeaders = headers;
-        transport.addParser(parser);
-        return transport;
+        return (AlbumFeed)getFeed(url, cache, AlbumFeed.class);
     }
 }

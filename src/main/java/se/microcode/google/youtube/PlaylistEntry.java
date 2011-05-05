@@ -2,6 +2,8 @@ package se.microcode.google.youtube;
 
 import com.google.api.client.util.Key;
 
+import se.microcode.google.Entry;
+
 public class PlaylistEntry extends Entry
 {
     @Key("atom:summary")

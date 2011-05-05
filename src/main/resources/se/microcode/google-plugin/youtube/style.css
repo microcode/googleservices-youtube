@@ -13,6 +13,11 @@
     background-repeat: no-repeat;
 }
 
+.se-microcode_youtube-playlist-crumbs
+{
+    font-weight: bold;
+}
+
 .se-microcode_youtube-playlist-cover
 {
     padding-bottom: 0.5em;
@@ -44,6 +49,16 @@
     margin: 0.4em;
     text-align: center;
     vertical-align: middle;
+}
+
+.se-microcode_youtube-playlist-video-info
+{
+    font-weight: bold;
+    width: 120px;
+}
+
+.se-microcode_youtube-playlist-video-desc
+{
 }
 
 .se-microcode_youtube-playlist-video img

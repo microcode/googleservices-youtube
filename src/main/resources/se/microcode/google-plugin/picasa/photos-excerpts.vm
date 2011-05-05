@@ -1,4 +1,4 @@
-#requireResource("se.microcode.confluence.plugin.picasa-gallery-plugin:picasa-gallery-resources")
+#requireResource("se.microcode.confluence.plugin.google-plugin:picasa-gallery-resources")
 #if ($url.contains("?"))
 #set ($url = $url + "&")
 #else

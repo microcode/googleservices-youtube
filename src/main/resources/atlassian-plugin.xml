@@ -7,6 +7,46 @@
 
     <resource type="i18n" name="i18n" location="se.microcode.${project.artifactId}.i18n.AtlassianPlugin"/>
 
+    <!-- picasa -->
+
+    <macro name="picasa-gallery" class="${project.groupId}.picasa.GalleryMacro" key="picasa-gallery">
+        <description>Display galleries from Picasa</description>
+        <parameters>
+            <parameter name="user" type="string" required="true"/>
+            <parameter name="pageSize" type="int" default="-1"/>
+            <parameter name="imageSize" type="int" default="640"/>
+            <parameter name="thumbnails" type="int" default="5"/>
+        </parameters>
+    </macro>
+
+    <macro name="picasa-gallery-excerpts" class="${project.groupId}.picasa.GalleryExcerptsMacro" key="picasa-gallery-excerpts">
+        <description>Mini-gallery displaying a set number of items from Picasa</description>
+        <parameters>
+            <parameter name="user" type="string" required="true"/>
+            <parameter name="album" type="string"/>
+            <parameter name="maxEntries" type="string" default="5"/>
+            <parameter name="thumbSize" type="int" default="0"/>
+            <parameter name="photo" type="string"/>
+            <parameter name="randomize" type="boolean"/>
+            <parameter name="page" type="string"/>
+        </parameters>
+    </macro>
+
+    <resource type="download" name="picasa/images/" location="se/microcode/${project.artifactId}/picasa/images/"/>
+
+    <resource type="velocity" name="albums.vm" location="se/microcode/${project.artifactId}/picasa/albums.vm"/>
+    <resource type="velocity" name="photos.vm" location="se/microcode/${project.artifactId}/picasa/photos.vm"/>
+    <resource type="velocity" name="photo.vm" location="se/microcode/${project.artifactId}/picasa/photo.vm"/>
+    <resource type="velocity" name="photos-excerpts.vm" location="se/microcode/${project.artifactId}/picasa/photos-excerpts.vm"/>
+
+    <web-resource key="picasa-gallery-resources">
+        <resource type="download" name="style.css" location="se/microcode/${project.artifactId}/picasa/style.css">
+            <property key="content-type" value="text/css"/>
+        </resource>
+    </web-resource>
+
+    <!-- youtube -->
+
     <macro name="youtube-playlists" class="${project.groupId}.youtube.PlaylistMacro" key="youtube-playlists">
         <description>Display playlists from Youtube</description>
         <parameters>
@@ -15,13 +55,13 @@
         </parameters>
     </macro>
 
-    <resource type="download" name="images/" location="se/microcode/${project.artifactId}/images/"/>
+    <resource type="download" name="youtube/images/" location="se/microcode/${project.artifactId}/youtube/images/"/>
 
-    <resource type="velocity" name="playlists.vm" location="se/microcode/${project.artifactId}/playlists.vm"/>
-    <resource type="velocity" name="playlist.vm" location="se/microcode/${project.artifactId}/playlist.vm"/>
+    <resource type="velocity" name="playlists.vm" location="se/microcode/${project.artifactId}/youtube/playlists.vm"/>
+    <resource type="velocity" name="playlist.vm" location="se/microcode/${project.artifactId}/youtube/playlist.vm"/>
 
     <web-resource key="youtube-playlist-resources">
-        <resource type="download" name="style.css" location="se/microcode/${project.artifactId}/style.css">
+        <resource type="download" name="style.css" location="se/microcode/${project.artifactId}/youtube/style.css">
             <property key="content-type" value="text/css"/>
         </resource>
     </web-resource>

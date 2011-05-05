@@ -84,6 +84,8 @@ public class PlaylistHelper
         entry.put("id", video.group.id);
         entry.put("title", video.title);
         entry.put("image", "http://i.ytimg.com/vi/" + video.group.id + "/default.jpg");
+        entry.put("desc", video.group.description);
+        entry.put("credit", video.group.credit);
 
         return entry;
     }

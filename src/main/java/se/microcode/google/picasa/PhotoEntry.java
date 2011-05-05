@@ -2,6 +2,8 @@ package se.microcode.google.picasa;
 
 import com.google.api.client.util.Key;
 
+import se.microcode.google.Entry;
+
 public class PhotoEntry extends Entry
 {
     @Key

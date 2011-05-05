@@ -1,5 +1,6 @@
-package se.microcode.google.picasa;
+package se.microcode.google;
 
+import com.google.api.client.googleapis.GoogleUrl;
 import com.google.api.client.googleapis.xml.atom.GoogleAtom;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpResponse;
@@ -27,16 +28,4 @@ public class Feed
     {
         return Link.find(links, "next");
     }
-
-    static Feed executeGet(HttpTransport transport, Url url, Class<? extends Feed> feedClass) throws IOException
-    {
-        url.fields = GoogleAtom.getFieldsFor(feedClass);
-        HttpRequest request = transport.buildGetRequest();
-        request.url = url;
-
-        HttpResponse response = request.execute();
-        return response.parseAs(feedClass);
-    }
-
-
 }

@@ -69,11 +69,17 @@ public class PlaylistMacro extends BaseMacro
     }
 
     public static final String USER_PARAM = "user";
-    public static final String MAXENTRIES_PARAM = "pageSize";
+    public static final String MAXENTRIES_PARAM = "maxEntries";
+    public static final String THUMBNAILS_PARAM = "thumbnails";
 
     public String execute(Map params, String body, RenderContext renderContext) throws MacroException
     {
         String user = (String)params.get(USER_PARAM);
+        if (user == null)
+        {
+            throw new MacroException("No user specified");
+        }
+
         int maxEntries = -1;
         try
         {
@@ -83,11 +89,13 @@ public class PlaylistMacro extends BaseMacro
         {
         }
 
-        int thumbnails = 5;
-
-        if (user == null)
+        int thumbnailCount = 5;
+        try
         {
-            throw new MacroException("No user specified");
+            thumbnailCount = Integer.parseInt((String)params.get(THUMBNAILS_PARAM));
+        }
+        catch (NumberFormatException e)
+        {
         }
 
         HttpServletRequest request = ServletActionContext.getRequest();
@@ -170,7 +178,7 @@ public class PlaylistMacro extends BaseMacro
         }
 
         VideoEntry videoEntry = null;
-        List<VideoEntry> nearbyVideos = null;
+        List<VideoEntry> thumbnails = null;
         int videoIndex = 0;
         if (videoId != null && (videoFeed != null) && (videoFeed.videos != null))
         {
@@ -179,12 +187,12 @@ public class PlaylistMacro extends BaseMacro
                 VideoEntry video = videoFeed.videos.get(i);
                 if (videoId.equals(video.group.id))
                 {
-                    int begin = (int)Math.max(0, i - Math.floor(thumbnails/2.0f));
-                    int end = (int)Math.min(videoFeed.videos.size(), i + Math.ceil(thumbnails/2.0f));
+                    int begin = (int)Math.max(0, i - Math.floor(thumbnailCount/2.0f));
+                    int end = (int)Math.min(videoFeed.videos.size(), i + Math.ceil(thumbnailCount/2.0f));
 
                     videoEntry = video;
                     videoIndex = i;
-                    nearbyVideos = videoFeed.videos.subList(begin, end);
+                    thumbnails = videoFeed.videos.subList(begin, end);
                     break;
                 }
             }
@@ -219,9 +227,9 @@ public class PlaylistMacro extends BaseMacro
             context.put("video", PlaylistHelper.buildVideoEntry(videoEntry));
             context.put("playlist", PlaylistHelper.buildPlaylist(playlistEntry));
 
-            if (nearbyVideos != null)
+            if (thumbnails != null)
             {
-                context.put("nearby", PlaylistHelper.buildVideoList(nearbyVideos));
+                context.put("thumbnails", PlaylistHelper.buildVideoList(thumbnails));
             }
 
             builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/youtube-playlist-plugin/video.vm", context));

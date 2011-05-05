@@ -21,7 +21,7 @@
 </div>
 
 <div class="se-microcode_youtube-playlist-thumbnails">
-#foreach ($thumbnail in $nearby)
+#foreach ($thumbnail in $thumbnails)
 #if ($thumbnail.id == $video.id)
 <span class="se-microcode_youtube-playlist-thumbnail-active"><img src="$thumbnail.image"/></span>
 #else

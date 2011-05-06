@@ -49,6 +49,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import se.microcode.google.youtube.*;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.List;
 import java.lang.Math;
@@ -71,6 +72,7 @@ public class PlaylistMacro extends BaseMacro
     public static final String USER_PARAM = "user";
     public static final String MAXENTRIES_PARAM = "maxEntries";
     public static final String THUMBNAILS_PARAM = "thumbnails";
+    public static final String REVERSE_PARAM = "reverse";
 
     public String execute(Map params, String body, RenderContext renderContext) throws MacroException
     {
@@ -93,6 +95,15 @@ public class PlaylistMacro extends BaseMacro
         try
         {
             thumbnailCount = Integer.parseInt((String)params.get(THUMBNAILS_PARAM));
+        }
+        catch (NumberFormatException e)
+        {
+        }
+
+        boolean reverse = false;
+        try
+        {
+            reverse = Boolean.parseBoolean((String)params.get(REVERSE_PARAM));
         }
         catch (NumberFormatException e)
         {
@@ -145,6 +156,11 @@ public class PlaylistMacro extends BaseMacro
         try
         {
             playlistsFeed = YoutubeHelper.getPlaylistsFeed(user, cache);
+
+            if (!reverse)
+            {
+                Collections.reverse(playlistsFeed.playlists);
+            }
         }
         catch (IOException e)
         {
@@ -169,6 +185,9 @@ public class PlaylistMacro extends BaseMacro
                 try
                 {
                     videoFeed = YoutubeHelper.getPlaylistFeed(playlistEntry.id, cache);
+
+                    PlaylistSummary summary = new PlaylistSummary(playlistEntry.summary);
+                    summary.patchVideos(videoFeed.videos);
                 }
                 catch (IOException e)
                 {

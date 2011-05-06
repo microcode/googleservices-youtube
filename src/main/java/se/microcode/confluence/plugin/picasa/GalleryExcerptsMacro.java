@@ -246,7 +246,7 @@ public class GalleryExcerptsMacro extends BaseMacro
                 context.put("url", url);
             }
 
-            builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/picasa-gallery-plugin/photos-excerpts.vm", context));
+            builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/picasa/photos-excerpts.vm", context));
 
         }
 

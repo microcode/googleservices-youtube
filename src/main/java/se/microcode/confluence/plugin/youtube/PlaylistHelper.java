@@ -56,11 +56,13 @@ public class PlaylistHelper
     public static Map buildPlaylist(PlaylistEntry playlist)
     {
         HashMap<String,String> entry = new HashMap<String,String>();
+        PlaylistSummary summary = new PlaylistSummary(playlist.summary);
 
         entry.put("id", playlist.id);
         entry.put("title", playlist.title);
         entry.put("count", Integer.toString(playlist.countHint));
-        entry.put("image", "http://i.ytimg.com/vi/QPTALzZ55pM/default.jpg");
+        entry.put("image", summary.cover);
+        entry.put("desc", summary.text);
 
         return entry;
     }

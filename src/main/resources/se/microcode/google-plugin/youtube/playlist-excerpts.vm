@@ -1,0 +1,15 @@
+#requireResource("se.microcode.confluence.plugin.google-plugin:youtube-playlist-resources")
+#if ($url.contains("?"))
+#set ($url = $url + "&")
+#else
+#set ($url = $url + "?")
+#end
+<span class="se-microcode_youtube-playlist-excerpts-thumbnails">
+#foreach ($video in $videos)
+#if ($url)
+<span><a href="${url}playlist=$playlist.id&amp;video=$video.id"><img src="$video.image"/></a></span>
+#else
+<span><img src="$video.image"/></span>
+#end
+#end
+</span>

@@ -55,6 +55,17 @@
         </parameters>
     </macro>
 
+    <macro name="youtube-playlist-excerpts" class="${project.groupId}.youtube.PlaylistExcerptsMacro" key="youtube-playlist-excerpts">
+        <description>Mini display of youtube videos (inlined)</description>
+        <parameters>
+            <parameter name="user" type="string" required="true"/>
+            <parameter name="playlist" type="string"/>
+            <parameter name="maxEntries" type="int" default="5"/>
+            <parameter name="randomize" type="boolean"/>
+            <parameter name="page" type="string"/>
+        </parameters>
+    </macro>
+
     <resource type="download" name="youtube/images/" location="se/microcode/${project.artifactId}/youtube/images/"/>
 
     <resource type="velocity" name="playlists.vm" location="se/microcode/${project.artifactId}/youtube/playlists.vm"/>

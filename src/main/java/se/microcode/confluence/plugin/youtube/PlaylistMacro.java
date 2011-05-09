@@ -49,6 +49,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import se.microcode.google.youtube.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.List;
@@ -156,11 +157,6 @@ public class PlaylistMacro extends BaseMacro
         try
         {
             playlistsFeed = YoutubeHelper.getPlaylistsFeed(user, cache);
-
-            if (!reverse)
-            {
-                Collections.reverse(playlistsFeed.playlists);
-            }
         }
         catch (IOException e)
         {
@@ -273,8 +269,16 @@ public class PlaylistMacro extends BaseMacro
         }
         else if (playlistsFeed.playlists != null)
         {
+            ArrayList<PlaylistEntry> playlists = new ArrayList<PlaylistEntry>(playlistsFeed.playlists);
+
             int begin = 0;
-            int end = playlistsFeed.playlists.size();
+            int end = playlists.size();
+
+            if (!reverse)
+            {
+                Collections.reverse(playlists);
+            }
+
             if (maxEntries > 0)
             {
                 context.put("currPage", Integer.toString(page+1));
@@ -284,7 +288,7 @@ public class PlaylistMacro extends BaseMacro
                 end = Math.min(end, begin + maxEntries);
             }
 
-            context.put("playlists", PlaylistHelper.buildPlaylists(playlistsFeed.playlists.subList(begin ,end)));
+            context.put("playlists", PlaylistHelper.buildPlaylists(playlists.subList(begin ,end)));
 
             builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/youtube/playlists.vm", context));
         }

@@ -23,16 +23,16 @@
 	<param name="allowscriptaccess" value="always"></param>
 	<embed src="http://www.youtube.com/v/${video.id}&fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="640" height="385"></embed>
 </object>
-<div class="se-microcode_youtube-playlist-video-info">$video.title (<a href="http://youtube.com/user/$video.credit" target="_new">$video.credit</a>)</div>
+<div class="se-microcode_youtube-playlist-video-info-full">$action.getText("se.microcode.google-plugin.youtube.desc", [$video.title, $video.credit])</div>
 <div class="se-microcode_youtube-playlist-video-desc">$video.desc</div>
 </div>
 
 <div class="se-microcode_youtube-playlist-thumbnails">
 #foreach ($thumbnail in $thumbnails)
 #if ($thumbnail.id == $video.id)
-<span class="se-microcode_youtube-playlist-thumbnail-active"><img src="$thumbnail.image"/></span>
+<span class="se-microcode_youtube-playlist-thumbnail-active"><img src="$thumbnail.image" title="$thumbnail.title"/></span>
 #else
-<span><a href="${baseUrl}playlist=$playlist.id&amp;video=$thumbnail.id"><img src="$thumbnail.image"/></a></span>
+<span><a href="${baseUrl}playlist=$playlist.id&amp;video=$thumbnail.id"><img src="$thumbnail.image" title="$thumbnail.title"/></a></span>
 #end
 #end
 </div>

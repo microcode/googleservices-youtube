@@ -17,5 +17,5 @@
 </div>
 #end
 #foreach ($photo in $photos)
-<div class="se-microcode_picasa-gallery-photo"><a href="${baseUrl}album=$album.id&amp;photo=$photo.id"><img src="$photo.image"/></a></div>
+<div class="se-microcode_picasa-gallery-photo" style="width: ${photo.size}px"><a href="${baseUrl}album=$album.id&amp;photo=$photo.id"><img src="$photo.image"/></a></div>
 #end

@@ -58,10 +58,12 @@ public class GalleryHelper
         if (maxSize > photo.group.thumbnail.size())
         {
             entry.put("image", photo.group.content.url + "?imgmax=" + maxSize);
+            entry.put("size", Integer.toString(maxSize));
         }
         else
         {
             entry.put("image", photo.group.thumbnail.get(maxSize).url);
+            entry.put("size", Integer.toString(Math.max(photo.group.thumbnail.get(maxSize).width,photo.group.thumbnail.get(maxSize).height)));
         }
         entry.put("title", photo.title);
         entry.put("id", photo.id);

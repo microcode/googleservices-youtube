@@ -1,6 +1,10 @@
 #requireResource("se.microcode.confluence.plugin.google-plugin:youtube-playlist-resources")
 <div class="se-microcode_youtube-playlist-crumbs">
+#if ($title)
+<span><a href="${baseUrl}">$title</a></span>
+#else
 <span><a href="${baseUrl}">$action.getText("se.microcode.google-plugin.youtube.name")</a></span>
+#end
 </div>
 #set ($Integer = 0)
 #if ($pageCount && $pageCount > 1)

@@ -6,16 +6,10 @@
 #end
 <div>
 #foreach ($playlist in $playlists)
-#if ($url)
-<a href="${url}playlist=$playlist.id">
-#end
 <div class="se-microcode_youtube-playlist-wrapper">
-<div class="se-microcode_youtube-playlist-cover"><a href="${baseUrl}playlist=$playlist.id"><img src="$playlist.image"/></a></div>
-<div class="se-microcode_youtube-playlist-title"><a href="${baseUrl}playlist=$playlist.id">$playlist.title</a></div>
+<div class="se-microcode_youtube-playlist-cover"><a href="${url}playlist=$playlist.id"><img src="$playlist.image"/></a></div>
+<div class="se-microcode_youtube-playlist-title"><a href="${url}playlist=$playlist.id">$playlist.title</a></div>
 <div class="se-microcode_youtube-playlist-count">$action.getText("se.microcode.google-plugin.youtube.videos", [$playlist.count])</div>
 </div>
-#if ($url)
-</a>
-#end
 #end
 </div>

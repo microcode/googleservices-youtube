@@ -31,6 +31,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 package se.microcode.confluence.plugin.youtube;
 
+import com.atlassian.confluence.pages.Page;
+import com.atlassian.confluence.renderer.PageContext;
 import com.atlassian.renderer.v2.macro.BaseMacro;
 import com.atlassian.renderer.v2.macro.MacroException;
 import com.atlassian.renderer.v2.RenderMode;
@@ -113,7 +115,7 @@ public class PlaylistMacro extends BaseMacro
         HttpServletRequest request = ServletActionContext.getRequest();
         String playlistId = null;
         String videoId = null;
-        int page = 0;
+        int pageIndex = 0;
         int pageId = 0;
         boolean flushCache = false;
         if (request != null)
@@ -123,7 +125,7 @@ public class PlaylistMacro extends BaseMacro
 
             try
             {
-                page = Integer.parseInt(request.getParameter("page"))-1;
+                pageIndex = Integer.parseInt(request.getParameter("pageIndex"))-1;
             }
             catch (NumberFormatException e)
             {
@@ -215,6 +217,13 @@ public class PlaylistMacro extends BaseMacro
 
         StringBuilder builder = new StringBuilder();
         Map context = MacroUtils.defaultVelocityContext();
+        PageContext pageContext = (PageContext)renderContext;
+
+        Page page = (pageContext.getEntity() != null && pageContext.getEntity() instanceof Page) ? (Page)pageContext.getEntity() : null;
+        if (page != null)
+        {
+            context.put("title", page.getTitle());
+        }
 
         if (pageId > 0)
         {
@@ -255,10 +264,10 @@ public class PlaylistMacro extends BaseMacro
             int end = videoFeed.videos.size();
             if (maxEntries > 0)
             {
-                context.put("currPage", page+1);
+                context.put("currPage", pageIndex +1);
                 context.put("pageCount", (end+maxEntries-1) / maxEntries);
 
-                begin = Math.min(end, page * maxEntries);
+                begin = Math.min(end, pageIndex * maxEntries);
                 end = Math.min(end, begin + maxEntries);
             }
 
@@ -281,10 +290,10 @@ public class PlaylistMacro extends BaseMacro
 
             if (maxEntries > 0)
             {
-                context.put("currPage", Integer.toString(page+1));
+                context.put("currPage", Integer.toString(pageIndex +1));
                 context.put("pageCount", (end+maxEntries-1) / maxEntries);
 
-                begin = Math.min(end, page * maxEntries);
+                begin = Math.min(end, pageIndex * maxEntries);
                 end = Math.min(end, begin + maxEntries);
             }
 

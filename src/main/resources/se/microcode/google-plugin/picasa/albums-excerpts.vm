@@ -5,15 +5,9 @@
 #set ($url = $url + "?")
 #end
 #foreach ($album in $albums)
-#if ($url)
-<a href="${url}album=$album.id">
-#end
 <div class="se-microcode_picasa-gallery-wrapper">
-<div class="se-microcode_picasa-gallery-cover"><a href="${baseUrl}album=$album.id"><img src="$album.image"/></a></div>
-<div class="se-microcode_picasa-gallery-title"><a href="${baseUrl}album=$album.id">$album.title</a></div>
+<div class="se-microcode_picasa-gallery-cover"><a href="${url}album=$album.id"><img src="$album.image"/></a></div>
+<div class="se-microcode_picasa-gallery-title"><a href="${url}album=$album.id">$album.title</a></div>
 <div class="se-microcode_picasa-gallery-count">$action.getText("se.microcode.google-plugin.picasa.photos", [$album.count])</div>
 </div>
-#if ($url)
-</a>
-#end
 #end

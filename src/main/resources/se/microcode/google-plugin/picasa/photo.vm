@@ -1,6 +1,10 @@
 #requireResource("se.microcode.confluence.plugin.google-plugin:picasa-gallery-resources")
 <div class="se-microcode_picasa-gallery-crumbs">
+#if ($title)
+<span><a href="${baseUrl}">$title</a></span>
+#else
 <span><a href="${baseUrl}">$action.getText("se.microcode.google-plugin.picasa.name")</a></span>
+#end
 <span>&nbsp;&gt;&gt;&nbsp;</span>
 <span><a href="${baseUrl}album=$album.id">$album.title</a></span>
 </div>

@@ -36,6 +36,8 @@ import com.atlassian.renderer.v2.macro.MacroException;
 import com.atlassian.renderer.v2.RenderMode;
 
 import com.atlassian.renderer.RenderContext;
+import com.atlassian.confluence.renderer.PageContext;
+import com.atlassian.confluence.pages.Page;
 import com.atlassian.cache.CacheFactory;
 import com.atlassian.cache.Cache;
 
@@ -111,7 +113,7 @@ public class GalleryMacro extends BaseMacro
         HttpServletRequest request = ServletActionContext.getRequest();
         String albumId = null;
         String photoId = null;
-        int page = 0;
+        int pageIndex = 0;
         int pageId = 0;
         boolean flushCache = false;
         if (request != null)
@@ -121,7 +123,7 @@ public class GalleryMacro extends BaseMacro
 
             try
             {
-                page = Integer.parseInt(request.getParameter("page"))-1;
+                pageIndex = Integer.parseInt(request.getParameter("page"))-1;
             }
             catch (NumberFormatException e)
             {
@@ -220,6 +222,13 @@ public class GalleryMacro extends BaseMacro
             context.put("baseUrl", "?");
         }
 
+        PageContext pageContext = (PageContext)renderContext;
+        Page page = (pageContext.getEntity() != null && pageContext.getEntity() instanceof Page) ? (Page)pageContext.getEntity() : null;
+        if (page != null)
+        {
+            context.put("title", page.getTitle());
+        }
+
         if (photoEntry != null)
         {
             context.put("currPage", photoIndex + 1);
@@ -252,10 +261,10 @@ public class GalleryMacro extends BaseMacro
             int end = albumFeed.photos.size();
             if (maxEntries > 0)
             {
-                context.put("currPage", page+1);
+                context.put("currPage", pageIndex+1);
                 context.put("pageCount", (end+maxEntries-1) / maxEntries);
 
-                begin = Math.min(end, page * maxEntries);
+                begin = Math.min(end, pageIndex * maxEntries);
                 end = Math.min(end, begin + maxEntries);
             }
 
@@ -271,10 +280,10 @@ public class GalleryMacro extends BaseMacro
             int end = userFeed.albums.size();
             if (maxEntries > 0)
             {
-                context.put("currPage", Integer.toString(page+1));
+                context.put("currPage", Integer.toString(pageIndex+1));
                 context.put("pageCount", (end+maxEntries-1) / maxEntries);
 
-                begin = Math.min(end, page * maxEntries);
+                begin = Math.min(end, pageIndex * maxEntries);
                 end = Math.min(end, begin + maxEntries);
             }
 

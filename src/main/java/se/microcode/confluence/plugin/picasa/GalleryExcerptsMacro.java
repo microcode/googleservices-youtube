@@ -78,6 +78,7 @@ public class GalleryExcerptsMacro extends BaseMacro
     public static final String PHOTO_PARAM = "photo";
     public static final String RANDOMIZE_PARAM = "randomize";
     public static final String PAGE_PARAM = "page";
+    public static final String DISPLAY_PARAM = "display";
 
     public GalleryExcerptsMacro(SettingsManager settingsManager)
     {
@@ -89,6 +90,7 @@ public class GalleryExcerptsMacro extends BaseMacro
         String picasaUser = (String)params.get(PICASAUSER_PARAM);
         String albumId = (String)params.get(ALBUM_PARAM);
         String photoId = (String)params.get(PHOTO_PARAM);
+        String displayType = (String)params.get(DISPLAY_PARAM);
         String url = null;
         String pageKey = (String)params.get(PAGE_PARAM);
         if (pageKey != null)
@@ -180,74 +182,119 @@ public class GalleryExcerptsMacro extends BaseMacro
 
         AlbumFeed albumFeed = null;
         AlbumEntry albumEntry = null;
-        if (albumId != null && (userFeed.albums != null))
-        {
-            for (AlbumEntry entry : userFeed.albums)
-            {
-                if (entry.id.equals(albumId))
-                {
-                    albumEntry = entry;
-                    break;
-                }
-            }
-        }
-        else if (userFeed.albums != null)
-        {
-            albumEntry = userFeed.albums.get(0);
-        }
-
-        if (albumEntry != null)
-        {
-            try
-            {
-                albumFeed = PicasaHelper.getAlbumFeed(picasaUser, albumEntry.id, cache);
-            }
-            catch (IOException e)
-            {
-                throw new MacroException("Failed to retrieve album feed");
-            }
-        }
-
-        int photoIndex = 0;
-        if ((photoId != null) && (albumFeed != null))
-        {
-            for (int i = 0, n = albumFeed.photos.size(); i != n; ++i)
-            {
-                PhotoEntry photo = albumFeed.photos.get(i);
-                if (photoId.equals(photo.id))
-                {
-                    photoIndex = i;
-                    break;
-                }
-            }
-        }
 
         StringBuilder builder = new StringBuilder();
 
-        if ((albumFeed != null) && albumFeed.photos != null)
+
+        if ("photos".equals(displayType) || displayType == null)
         {
-            Map context = MacroUtils.defaultVelocityContext();
-            List<PhotoEntry> photos = new ArrayList<PhotoEntry>(albumFeed.photos);
-            int begin = (int)Math.max(0, photoIndex - Math.floor(maxEntries/2.0f));
-            int count = photoIndex - begin;
-            int end = (int)Math.min(photos.size(), photoIndex + (maxEntries - count));
-
-            if (randomize)
+            if (albumId != null && (userFeed.albums != null))
             {
-                Collections.shuffle(photos);
+                for (AlbumEntry entry : userFeed.albums)
+                {
+                    if (entry.id.equals(albumId))
+                    {
+                        albumEntry = entry;
+                        break;
+                    }
+                }
+            }
+            else if (userFeed.albums != null)
+            {
+                albumEntry = userFeed.albums.get(0);
             }
 
-            List<Map> photoList = GalleryHelper.buildPhotoList(photos.subList(begin,end), thumbSize);
-
-            context.put("photos", photoList);
-            context.put("album", GalleryHelper.buildAlbumEntry(albumEntry));
-            if (url != null)
+            if (albumEntry != null)
             {
-                context.put("url", url);
+                try
+                {
+                    albumFeed = PicasaHelper.getAlbumFeed(picasaUser, albumEntry.id, cache);
+                }
+                catch (IOException e)
+                {
+                    throw new MacroException("Failed to retrieve album feed");
+                }
             }
 
-            builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/picasa/photos-excerpts.vm", context));
+            int photoIndex = 0;
+            if ((photoId != null) && (albumFeed != null))
+            {
+                for (int i = 0, n = albumFeed.photos.size(); i != n; ++i)
+                {
+                    PhotoEntry photo = albumFeed.photos.get(i);
+                    if (photoId.equals(photo.id))
+                    {
+                        photoIndex = i;
+                        break;
+                    }
+                }
+            }
 
+            if ((albumFeed != null) && albumFeed.photos != null)
+            {
+                Map context = MacroUtils.defaultVelocityContext();
+                List<PhotoEntry> photos = new ArrayList<PhotoEntry>(albumFeed.photos);
+                int begin = (int)Math.max(0, photoIndex - Math.floor(maxEntries/2.0f));
+                int count = photoIndex - begin;
+                int end = (int)Math.min(photos.size(), photoIndex + (maxEntries - count));
+
+                if (randomize)
+                {
+                    Collections.shuffle(photos);
+                }
+
+                List<Map> photoList = GalleryHelper.buildPhotoList(photos.subList(begin,end), thumbSize);
+
+                context.put("photos", photoList);
+                context.put("album", GalleryHelper.buildAlbumEntry(albumEntry));
+                if (url != null)
+                {
+                    context.put("url", url);
+                }
+
+                builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/picasa/photos-excerpts.vm", context));
+
+            }
+        }
+        else if ("albums".equals(displayType))
+        {
+            int albumIndex = 0;
+            if ((albumId != null) && (userFeed != null))
+            {
+                for (int i = 0, n = userFeed.albums.size(); i != n; ++i)
+                {
+                    AlbumEntry album = userFeed.albums.get(i);
+                    if (albumId.equals(album.id))
+                    {
+                        albumIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            if ((userFeed != null) && (userFeed.albums != null))
+            {
+                Map context = MacroUtils.defaultVelocityContext();
+                List<AlbumEntry> albums = new ArrayList<AlbumEntry>(userFeed.albums);
+                int begin = (int)Math.max(0, albumIndex - Math.floor(maxEntries / 2.0f));
+                int count = albumIndex - begin;
+                int end = (int)Math.min(albums.size(), albumIndex + (maxEntries - count));
+
+                if (randomize)
+                {
+                    Collections.shuffle(albums);
+                }
+
+                List<Map> albumList = GalleryHelper.buildAlbumList(albums.subList(begin, end));
+
+                context.put("albums", albumList);
+                if (url != null)
+                {
+                    context.put("url", url);
+                }
+
+                builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/picasa/albums-excerpts.vm", context));
+            }
         }
 
         return builder.toString();

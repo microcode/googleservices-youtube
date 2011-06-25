@@ -38,6 +38,7 @@
     <resource type="velocity" name="photos.vm" location="se/microcode/${project.artifactId}/picasa/photos.vm"/>
     <resource type="velocity" name="photo.vm" location="se/microcode/${project.artifactId}/picasa/photo.vm"/>
     <resource type="velocity" name="photos-excerpts.vm" location="se/microcode/${project.artifactId}/picasa/photos-excerpts.vm"/>
+    <resource type="velocity" name="albums-excerpts.vm" location="se/microcode/${project.artifactId}/picasa/albums-excerpts.vm"/>
 
     <web-resource key="picasa-gallery-resources">
         <resource type="download" name="style.css" location="se/microcode/${project.artifactId}/picasa/style.css">
@@ -70,6 +71,8 @@
 
     <resource type="velocity" name="playlists.vm" location="se/microcode/${project.artifactId}/youtube/playlists.vm"/>
     <resource type="velocity" name="playlist.vm" location="se/microcode/${project.artifactId}/youtube/playlist.vm"/>
+    <resource type="velocity" name="playlist-excerpts.vm" location="se/microcode/${project.artifactId}/youtube/playlist-excerpts.vm"/>
+    <resource type="velocity" name="playlists-excerpts.vm" location="se/microcode/${project.artifactId}/youtube/playlists-excerpts.vm"/>
 
     <web-resource key="youtube-playlist-resources">
         <resource type="download" name="style.css" location="se/microcode/${project.artifactId}/youtube/style.css">

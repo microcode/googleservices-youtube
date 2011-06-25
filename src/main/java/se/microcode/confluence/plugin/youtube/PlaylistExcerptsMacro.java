@@ -49,12 +49,14 @@ public class PlaylistExcerptsMacro extends BaseMacro
     public static final String MAXENTRIES_PARAM = "maxEntries";
     public static final String RANDOMIZE_PARAM = "randomize";
     public static final String PAGE_PARAM = "page";
+    public static final String DISPLAY_PARAM = "display";
 
     public String execute(Map params, String body, RenderContext renderContext) throws MacroException
     {
         String user = (String)params.get(USER_PARAM);
         String playlistId = (String)params.get(PLAYLIST_PARAM);
         String pageKey = (String)params.get(PAGE_PARAM);
+        String displayType = (String)params.get(DISPLAY_PARAM);
 
         if (user == null)
         {
@@ -130,56 +132,80 @@ public class PlaylistExcerptsMacro extends BaseMacro
             throw new MacroException("Failed to retrieve playlists");
         }
 
-        PlaylistEntry playlistEntry = null;
-        if ((playlistId != null) && (playlistsFeed.playlists != null))
-        {
-            for (PlaylistEntry entry : playlistsFeed.playlists)
-            {
-                if (entry.id.equals(playlistId))
-                {
-                    playlistEntry = entry;
-                    break;
-                }
-            }
-        }
-        else if ((playlistsFeed.playlists != null) && (playlistsFeed.playlists.size() > 0))
-        {
-            playlistEntry = playlistsFeed.playlists.get(playlistsFeed.playlists.size()-1);
-        }
-
-        VideoFeed videoFeed = null;
-        if (playlistEntry != null)
-        {
-            try
-            {
-                videoFeed = YoutubeHelper.getPlaylistFeed(playlistEntry.id, cache);
-            }
-            catch (IOException e)
-            {
-                throw new MacroException("Failed to retrieve playlist feed");
-            }
-        }
-
         StringBuilder builder = new StringBuilder();
 
-        if ((videoFeed != null) && (videoFeed.videos != null))
+        if ("playlist".equals(displayType) || displayType == null)
         {
-            Map context = MacroUtils.defaultVelocityContext();
-            List<VideoEntry> videos = new ArrayList<VideoEntry>(videoFeed.videos);
-            int begin = 0;
-            int count = 0;
-            int end = (int)Math.min(videos.size(), 0 + (maxEntries - count));
-
-            if (randomize)
+            PlaylistEntry playlistEntry = null;
+            if ((playlistId != null) && (playlistsFeed.playlists != null))
             {
-                Collections.shuffle(videos);
+                for (PlaylistEntry entry : playlistsFeed.playlists)
+                {
+                    if (entry.id.equals(playlistId))
+                    {
+                        playlistEntry = entry;
+                        break;
+                    }
+                }
+            }
+            else if ((playlistsFeed.playlists != null) && (playlistsFeed.playlists.size() > 0))
+            {
+                playlistEntry = playlistsFeed.playlists.get(playlistsFeed.playlists.size()-1);
             }
 
-            context.put("videos", PlaylistHelper.buildVideoList(videos.subList(begin, end)));
-            context.put("playlist", PlaylistHelper.buildPlaylist(playlistEntry));
-            context.put("url", url);
+            VideoFeed videoFeed = null;
+            if (playlistEntry != null)
+            {
+                try
+                {
+                    videoFeed = YoutubeHelper.getPlaylistFeed(playlistEntry.id, cache);
+                }
+                catch (IOException e)
+                {
+                    throw new MacroException("Failed to retrieve playlist feed");
+                }
+            }
 
-            builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/youtube/playlist-excerpts.vm", context));
+            if ((videoFeed != null) && (videoFeed.videos != null))
+            {
+                Map context = MacroUtils.defaultVelocityContext();
+                List<VideoEntry> videos = new ArrayList<VideoEntry>(videoFeed.videos);
+                int begin = 0;
+                int count = 0;
+                int end = (int)Math.min(videos.size(), 0 + (maxEntries - count));
+
+                if (randomize)
+                {
+                    Collections.shuffle(videos);
+                }
+
+                context.put("videos", PlaylistHelper.buildVideoList(videos.subList(begin, end)));
+                context.put("playlist", PlaylistHelper.buildPlaylist(playlistEntry));
+                context.put("url", url);
+
+                builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/youtube/playlist-excerpts.vm", context));
+            }
+        }
+        else if ("playlists".equals(displayType))
+        {
+            if ((playlistsFeed != null) && (playlistsFeed.playlists != null))
+            {
+                Map context = MacroUtils.defaultVelocityContext();
+                List<PlaylistEntry> playlists = new ArrayList<PlaylistEntry>(playlistsFeed.playlists);
+                int begin = 0;
+                int count = 0;
+                int end = (int)Math.min(playlists.size(), 0 + (maxEntries - count));
+
+                if (randomize)
+                {
+                    Collections.shuffle(playlists);
+                }
+
+                context.put("playlists", PlaylistHelper.buildPlaylists(playlists.subList(begin, end)));
+                context.put("url", url);
+
+                builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/youtube/playlists-excerpts.vm", context));
+            }
         }
 
         return builder.toString();

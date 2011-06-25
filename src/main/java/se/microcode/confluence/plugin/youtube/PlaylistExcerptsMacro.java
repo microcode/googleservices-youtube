@@ -196,6 +196,7 @@ public class PlaylistExcerptsMacro extends BaseMacro
                 int count = 0;
                 int end = (int)Math.min(playlists.size(), 0 + (maxEntries - count));
 
+                Collections.reverse(playlists);
                 if (randomize)
                 {
                     Collections.shuffle(playlists);

@@ -89,7 +89,7 @@
     margin: 0.1em;
 }
 
-.se-microcode_picasa-gallery-excerpts-thumbnail
+.se-microcode_picasa-gallery-excerpts-thumbnails div
 {
     display:-moz-inline-stack;
     display: inline-block;
@@ -101,7 +101,7 @@
     vertical-align: middle;
 }
 
-.se-microcode_picasa-gallery-excerpts-thumbnail img
+.se-microcode_picasa-gallery-excerpts-thumbnails img
 {
     display: inline;
     vertical-align: middle;

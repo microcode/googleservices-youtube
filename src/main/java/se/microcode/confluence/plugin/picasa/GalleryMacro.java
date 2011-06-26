@@ -31,6 +31,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 package se.microcode.confluence.plugin.picasa;
 
+import com.atlassian.confluence.setup.settings.SettingsManager;
+import com.atlassian.plugin.webresource.WebResourceManager;
 import com.atlassian.renderer.v2.macro.BaseMacro;
 import com.atlassian.renderer.v2.macro.MacroException;
 import com.atlassian.renderer.v2.RenderMode;
@@ -49,6 +51,7 @@ import com.atlassian.spring.container.ContainerManager;
 import com.opensymphony.webwork.ServletActionContext;
 import javax.servlet.http.HttpServletRequest;
 
+import se.microcode.confluence.plugin.PluginHelper;
 import se.microcode.google.picasa.*;
 
 import java.util.Map;
@@ -74,6 +77,15 @@ public class GalleryMacro extends BaseMacro
     public static final String MAXENTRIES_PARAM = "pageSize";
     public static final String IMAGESIZE_PARAM = "imageSize";
     public static final String THUMBNAILS_PARAM = "thumbnails";
+
+    private SettingsManager settingsManager;
+    private WebResourceManager webResourceManager;
+
+    public GalleryMacro(SettingsManager settingsManager, WebResourceManager webResourceManager)
+    {
+        this.settingsManager = settingsManager;
+        this.webResourceManager = webResourceManager;
+    }
 
     public String execute(Map params, String body, RenderContext renderContext) throws MacroException
     {
@@ -292,6 +304,8 @@ public class GalleryMacro extends BaseMacro
 
             builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/picasa/albums.vm", context));
         }
+
+        builder.append(PluginHelper.createCssFix(webResourceManager, "se.microcode.confluence.plugin.google-plugin:picasa-gallery-resources"));
 
         return builder.toString();
     }

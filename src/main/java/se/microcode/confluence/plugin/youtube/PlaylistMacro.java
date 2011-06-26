@@ -33,6 +33,7 @@ package se.microcode.confluence.plugin.youtube;
 
 import com.atlassian.confluence.pages.Page;
 import com.atlassian.confluence.renderer.PageContext;
+import com.atlassian.plugin.webresource.WebResourceManager;
 import com.atlassian.renderer.v2.macro.BaseMacro;
 import com.atlassian.renderer.v2.macro.MacroException;
 import com.atlassian.renderer.v2.RenderMode;
@@ -49,6 +50,7 @@ import com.atlassian.spring.container.ContainerManager;
 import com.opensymphony.webwork.ServletActionContext;
 import javax.servlet.http.HttpServletRequest;
 
+import se.microcode.confluence.plugin.PluginHelper;
 import se.microcode.google.youtube.*;
 
 import java.util.ArrayList;
@@ -70,6 +72,13 @@ public class PlaylistMacro extends BaseMacro
     public boolean hasBody()
     {
         return false;
+    }
+
+    private WebResourceManager webResourceManager;
+
+    public PlaylistMacro(WebResourceManager webResourceManager)
+    {
+        this.webResourceManager = webResourceManager;
     }
 
     public static final String USER_PARAM = "user";
@@ -301,6 +310,8 @@ public class PlaylistMacro extends BaseMacro
 
             builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/youtube/playlists.vm", context));
         }
+
+        builder.append(PluginHelper.createCssFix(webResourceManager, "se.microcode.confluence.plugin.google-plugin:youtube-playlist-resources"));
 
         return builder.toString();
     }

@@ -32,6 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
 package se.microcode.confluence.plugin.picasa;
 
 import com.atlassian.confluence.setup.settings.SettingsManager;
+import com.atlassian.plugin.webresource.WebResourceManager;
 import com.atlassian.renderer.v2.macro.BaseMacro;
 import com.atlassian.cache.Cache;
 import com.atlassian.cache.CacheFactory;
@@ -45,6 +46,7 @@ import com.atlassian.renderer.v2.RenderMode;
 import com.atlassian.renderer.v2.macro.MacroException;
 import com.atlassian.spring.container.ContainerManager;
 import com.opensymphony.webwork.ServletActionContext;
+import se.microcode.confluence.plugin.PluginHelper;
 import se.microcode.google.picasa.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -70,6 +72,7 @@ public class GalleryExcerptsMacro extends BaseMacro
     }
 
     private SettingsManager settingsManager;
+    private WebResourceManager webResourceManager;
 
     public static final String PICASAUSER_PARAM = "user";
     public static final String ALBUM_PARAM = "album";
@@ -80,9 +83,10 @@ public class GalleryExcerptsMacro extends BaseMacro
     public static final String PAGE_PARAM = "page";
     public static final String DISPLAY_PARAM = "display";
 
-    public GalleryExcerptsMacro(SettingsManager settingsManager)
+    public GalleryExcerptsMacro(SettingsManager settingsManager, WebResourceManager webResourceManager)
     {
         this.settingsManager = settingsManager;
+        this.webResourceManager = webResourceManager;
     }
 
     public String execute(Map params, String body, RenderContext renderContext) throws MacroException
@@ -296,6 +300,8 @@ public class GalleryExcerptsMacro extends BaseMacro
                 builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/picasa/albums-excerpts.vm", context));
             }
         }
+
+        builder.append(PluginHelper.createCssFix(webResourceManager, "se.microcode.confluence.plugin.google-plugin:picasa-gallery-resources"));
 
         return builder.toString();
     }

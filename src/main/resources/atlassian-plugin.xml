@@ -6,6 +6,7 @@
     </plugin-info>
 
     <resource type="i18n" name="i18n" location="se.microcode.${project.artifactId}.i18n.AtlassianPlugin"/>
+    <resource type="velocity" name="css-fix.vm" location="se/microcode/${project.artifactId}/css-fix.vm"/>
 
     <!-- picasa -->
 

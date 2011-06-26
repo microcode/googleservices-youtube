@@ -8,12 +8,14 @@ import com.atlassian.confluence.renderer.PageContext;
 import com.atlassian.confluence.renderer.radeox.macros.MacroUtils;
 import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.confluence.util.velocity.VelocityUtils;
+import com.atlassian.plugin.webresource.WebResourceManager;
 import com.atlassian.renderer.RenderContext;
 import com.atlassian.renderer.v2.RenderMode;
 import com.atlassian.renderer.v2.macro.BaseMacro;
 import com.atlassian.renderer.v2.macro.MacroException;
 import com.atlassian.spring.container.ContainerManager;
 import com.opensymphony.webwork.ServletActionContext;
+import se.microcode.confluence.plugin.PluginHelper;
 import se.microcode.google.youtube.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,11 +39,13 @@ public class PlaylistExcerptsMacro extends BaseMacro
 
     private SettingsManager settingsManager;
     private PageManager pageManager;
+    private WebResourceManager webResourceManager;
 
-    public PlaylistExcerptsMacro(SettingsManager settingsManager, PageManager pageManager)
+    public PlaylistExcerptsMacro(SettingsManager settingsManager, PageManager pageManager, WebResourceManager webResourceManager)
     {
         this.settingsManager = settingsManager;
         this.pageManager = pageManager;
+        this.webResourceManager = webResourceManager;
     }
 
     public static final String USER_PARAM = "user";
@@ -208,6 +212,8 @@ public class PlaylistExcerptsMacro extends BaseMacro
                 builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/youtube/playlists-excerpts.vm", context));
             }
         }
+
+        builder.append(PluginHelper.createCssFix(webResourceManager, "se.microcode.confluence.plugin.google-plugin:youtube-playlist-resources"));
 
         return builder.toString();
     }

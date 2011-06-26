@@ -7,9 +7,9 @@
 <div class="se-microcode_picasa-gallery-excerpts-thumbnails">
 #foreach ($photo in $photos)
 #if ($url)
-<div class="se-microcode_picassa-gallery-excerpts-thumbnail" style="width: ${photo.size}px"><a href="${url}album=$album.id&amp;photo=$photo.id"><img src="$photo.image"/></a></div>
+<div style="width: ${photo.size}px"><a href="${url}album=$album.id&amp;photo=$photo.id"><img src="$photo.image"/></a></div>
 #else
-<div class="se-microcode_picasa-gallery-excerpts-thumbnail" style="width: ${photo.size}px"><img src="$photo.image"/></div>
+<div style="width: ${photo.size}px"><img src="$photo.image"/></div>
 #end
 #end
-</span>
+</div>

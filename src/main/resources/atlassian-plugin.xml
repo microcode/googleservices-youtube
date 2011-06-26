@@ -33,8 +33,6 @@
         </parameters>
     </macro>
 
-    <resource type="download" name="picasa/images/" location="se/microcode/${project.artifactId}/picasa/images/"/>
-
     <resource type="velocity" name="albums.vm" location="se/microcode/${project.artifactId}/picasa/albums.vm"/>
     <resource type="velocity" name="photos.vm" location="se/microcode/${project.artifactId}/picasa/photos.vm"/>
     <resource type="velocity" name="photo.vm" location="se/microcode/${project.artifactId}/picasa/photo.vm"/>
@@ -45,6 +43,8 @@
         <resource type="download" name="style.css" location="se/microcode/${project.artifactId}/picasa/style.css">
             <property key="content-type" value="text/css"/>
         </resource>
+
+        <resource type="download" name="images/" location="se/microcode/${project.artifactId}/picasa/images/"/>
     </web-resource>
 
     <!-- youtube -->
@@ -68,8 +68,6 @@
         </parameters>
     </macro>
 
-    <resource type="download" name="youtube/images/" location="se/microcode/${project.artifactId}/youtube/images/"/>
-
     <resource type="velocity" name="playlists.vm" location="se/microcode/${project.artifactId}/youtube/playlists.vm"/>
     <resource type="velocity" name="playlist.vm" location="se/microcode/${project.artifactId}/youtube/playlist.vm"/>
     <resource type="velocity" name="playlist-excerpts.vm" location="se/microcode/${project.artifactId}/youtube/playlist-excerpts.vm"/>
@@ -79,6 +77,7 @@
         <resource type="download" name="style.css" location="se/microcode/${project.artifactId}/youtube/style.css">
             <property key="content-type" value="text/css"/>
         </resource>
+        <resource type="download" name="images/" location="se/microcode/${project.artifactId}/youtube/images/"/>
     </web-resource>
 
 </atlassian-plugin>

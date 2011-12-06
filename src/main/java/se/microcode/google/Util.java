@@ -12,6 +12,7 @@ public class Util
     .set("gd", "http://schemas.google.com/g/2005")
     .set("geo", "http://www.w3.org/2003/01/geo/wgs84_pos#")
     .set("georss", "http://www.georss.org/georss")
+    .set("app", "http://www.w3.org/2007/app")
     .set("gml", "http://www.opengis.net/gml")
     .set("gphoto", "http://schemas.google.com/photos/2007")
     .set("media", "http://search.yahoo.com/mrss/")

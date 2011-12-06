@@ -5,6 +5,7 @@ import com.google.api.client.googleapis.xml.atom.GoogleAtom;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpTransport;
+import com.google.api.client.util.DateTime;
 import com.google.api.client.util.Key;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public class Feed
     {
         return Link.find(links, "next");
     }
+
+    DateTime timeout;
 }

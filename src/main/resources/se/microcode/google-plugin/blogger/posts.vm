@@ -1,0 +1,15 @@
+#foreach ($post in $posts)
+<$header>
+#if ($timestamp == true)
+$post.timestamp: $post.title
+#else
+$post.title
+#end
+</$header>
+<p>$post.content</p>
+<p>
+#foreach ($image in $post.images)
+<a href="$image.url"><img src="$image.thumb" width="$width"/>
+#end
+</p>
+#end

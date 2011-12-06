@@ -80,4 +80,12 @@
         <resource type="download" name="images/" location="se/microcode/${project.artifactId}/youtube/images/"/>
     </web-resource>
 
+    <!-- blogger -->
+
+    <macro name="blogger-posts" class="${project.groupId}.blogger.BloggerMacro" key="blogger-posts">
+        <description>Display Blogger posts</description>
+    </macro>
+
+    <resource type="velocity" name="posts.vm" location="se/microcode/${project.artifactId}/blogger/posts.vm"/>
+
 </atlassian-plugin>

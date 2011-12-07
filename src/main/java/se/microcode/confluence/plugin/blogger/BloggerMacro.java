@@ -42,9 +42,8 @@ import com.atlassian.renderer.v2.macro.BaseMacro;
 import com.atlassian.renderer.v2.macro.MacroException;
 import com.atlassian.spring.container.ContainerManager;
 import com.opensymphony.webwork.ServletActionContext;
-import se.microcode.confluence.plugin.PluginHelper;
-import se.microcode.google.blogger.BlogPost;
-import se.microcode.google.blogger.BlogPostFeed;
+import se.microcode.google.blogger.Post;
+import se.microcode.google.blogger.PostFeed;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -52,7 +51,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.*;
 
 public class BloggerMacro extends BaseMacro
 {
@@ -76,6 +74,7 @@ public class BloggerMacro extends BaseMacro
     public static final String REFRESH_PARAM = "refresh";
     public static final String HEADER_PARAM = "header";
     public static final String WIDTH_PARAM = "width";
+    public static final String TIMEOUT_PARAM = "timeout";
 
     private WebResourceManager webResourceManager;
 
@@ -101,6 +100,15 @@ public class BloggerMacro extends BaseMacro
             labels = labelParam.split(",");
         }
 
+        int timeoutParam = 3600;
+        try
+        {
+            timeoutParam = Integer.parseInt((String)params.get(TIMEOUT_PARAM));
+        }
+        catch (NumberFormatException e)
+        {
+        }
+
         HttpServletRequest request = ServletActionContext.getRequest();
         boolean flushCache = false;
         if (request != null)
@@ -121,10 +129,10 @@ public class BloggerMacro extends BaseMacro
             cache.removeAll();
         }
 
-        BlogPostFeed blogFeed;
+        PostFeed blogFeed;
         try
         {
-            blogFeed = BloggerHelper.getBlogPosts(id, labels, cache);
+            blogFeed = BloggerHelper.getBlogPosts(id, labels, cache, timeoutParam);
         }
         catch (IOException e)
         {
@@ -164,7 +172,7 @@ public class BloggerMacro extends BaseMacro
 
         if(blogFeed != null && blogFeed.posts != null)
         {
-            List<BlogPost> posts = new ArrayList<BlogPost>(blogFeed.posts);
+            List<Post> posts = new ArrayList<Post>(blogFeed.posts);
 
             int countParam = posts.size();
             try
@@ -189,7 +197,7 @@ public class BloggerMacro extends BaseMacro
             {
             }
 
-            context.put("posts", BloggerHelper.buildBlogPosts(posts, "gallery".equalsIgnoreCase(imagesParam), widthParam));
+            context.put("posts", BloggerHelper.buildPostFeed(posts, "gallery".equalsIgnoreCase(imagesParam), widthParam));
             builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/blogger/posts.vm", context));
         }
 

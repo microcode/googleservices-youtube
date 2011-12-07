@@ -13,19 +13,20 @@ import com.atlassian.cache.Cache;
 import com.google.api.client.googleapis.GoogleUrl;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class GoogleHelper
 {
     public static Feed getFeed(GoogleUrl url, Cache cache, Class<? extends Feed> feedClass) throws IOException
     {
-        return getFeed(url, cache, feedClass, true, 3600);
+        return getFeed(url, cache, feedClass, true, 3600 * 1000);
     }
 
-    public static Feed getFeed(GoogleUrl url, Cache cache, Class<? extends Feed> feedClass, boolean useFields, long timeout) throws IOException
+    public static Feed getFeed(GoogleUrl url, Cache cache, Class<? extends Feed> feedClass, boolean useFields, long timeoutMillis) throws IOException
     {
         HttpTransport transport = createTransport();
         String key = url.toString();
-        DateTime now = new DateTime();
+        DateTime now = new DateTime(new Date());
 
         Feed feed = null;
 
@@ -53,7 +54,7 @@ public class GoogleHelper
             feed = executeGet(transport, url, feedClass, useFields);
             if ((feed != null) && (cache != null))
             {
-                feed.timeout = new DateTime(now.value + 3600);
+                feed.timeout = new DateTime(now.value + timeoutMillis);
                 cache.put(key, feed);
             }
         }
@@ -63,7 +64,7 @@ public class GoogleHelper
     static HttpTransport createTransport()
     {
         GoogleHeaders headers = new GoogleHeaders();
-        headers.setApplicationName("se.microcode.youtube-playlist-plugin/1.0");
+        headers.setApplicationName("se.microcode.google-plugin/1.0");
         headers.gdataVersion = "2";
 
         AtomParser parser = new AtomParser();

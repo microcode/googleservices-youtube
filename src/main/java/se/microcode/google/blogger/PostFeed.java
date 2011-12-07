@@ -5,8 +5,8 @@ import se.microcode.google.Feed;
 
 import java.util.List;
 
-public class BlogPostFeed extends Feed
+public class PostFeed extends Feed
 {
     @Key("atom:entry")
-    public List<BlogPost> posts;
+    public List<Post> posts;
 }

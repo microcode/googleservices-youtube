@@ -6,7 +6,7 @@ import se.microcode.google.Entry;
 
 import java.util.List;
 
-public class BlogPost extends Entry
+public class Post extends Entry
 {
     @Key("atom:id")
     public String id;

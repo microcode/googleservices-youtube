@@ -2,34 +2,33 @@ package se.microcode.confluence.plugin.blogger;
 
 import com.atlassian.cache.Cache;
 
+import com.google.api.client.util.DateTime;
 import se.microcode.google.GoogleHelper;
-import se.microcode.google.blogger.BlogPost;
-import se.microcode.google.blogger.BlogPostFeed;
+import se.microcode.google.blogger.Post;
+import se.microcode.google.blogger.PostFeed;
 import se.microcode.google.blogger.Url;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BloggerHelper extends GoogleHelper
 {
-    public static List<Map> buildBlogPosts(List<BlogPost> blogPosts, boolean extractImages, int widthParam)
+    public static List<Map> buildPostFeed(List<Post> posts, boolean extractImages, int widthParam)
     {
         ArrayList<Map> output = new ArrayList<Map>();
 
-        for (BlogPost post : blogPosts)
+        for (Post post : posts)
         {
-            output.add(buildBlogPost(post, extractImages, widthParam));
+            output.add(buildPost(post, extractImages, widthParam));
         }
 
         return output;
     }
 
-    public static Map buildBlogPost(BlogPost post, boolean extractImages, int widthParam)
+    public static Map buildPost(Post post, boolean extractImages, int widthParam)
     {
         HashMap<String,Object> entry = new HashMap<String,Object>();
 
@@ -74,19 +73,32 @@ public class BloggerHelper extends GoogleHelper
             }
         }
 
-        content = content.replaceAll("<a.+?>< ?\\/a>", ""); // empty links
-        content = content.replaceAll("<div.+?class=\"separator\".+?>< ?\\/div>", ""); // empty separator divs
-        content = content.replaceAll("<div.+?class=\"blogger-post-footer\".+?>.*</div>", ""); // footer tracking link
+        content = content.replaceAll("<a [^>]+>< ?\\/a>", ""); // empty links
+        content = content.replaceAll("<div [^>]*class=\"separator\"[^>]*>< ?\\/div>", ""); // empty separator divs
+        content = content.replaceAll("<div [^>]*class=\"blogger-post-footer\"[^>]*>.*< ?\\/div>", ""); // footer tracking link
+
+        DateTime time;
+        try
+        {
+            time = DateTime.parseRfc3339(post.published);
+        }
+        catch (NumberFormatException e)
+        {
+            time = new DateTime(new Date());
+        }
+
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+
 
         entry.put("title", post.title);
-        entry.put("timestamp", post.published);
+        entry.put("timestamp", format.format(new Date(time.value)));
         entry.put("content", content);
         entry.put("images", images);
 
         return entry;
     }
 
-    public static BlogPostFeed getBlogPosts(String id, String labels[], Cache cache) throws IOException
+    public static PostFeed getBlogPosts(String id, String labels[], Cache cache, int timeout) throws IOException
     {
         String query = "";
         if (labels.length > 0)
@@ -100,7 +112,6 @@ public class BloggerHelper extends GoogleHelper
 
         Url url = Url.relativeToRoot("feeds/" + id + "/posts/default" + query);
 
-        return (BlogPostFeed)getFeed(url, cache, BlogPostFeed.class, false, 600
-        );
+        return (PostFeed)getFeed(url, cache, PostFeed.class, false, timeout);
     }
 }

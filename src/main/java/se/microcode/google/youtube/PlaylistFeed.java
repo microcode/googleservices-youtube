@@ -8,7 +8,7 @@ import se.microcode.google.Feed;
 import java.io.IOException;
 import java.util.List;
 
-public class PlaylistsFeed extends Feed
+public class PlaylistFeed extends Feed
 {
     @Key("atom:entry")
     public List<PlaylistEntry> playlists;

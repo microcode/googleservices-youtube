@@ -29,12 +29,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
  */
 
-package se.microcode.confluence.plugin.picasa;
+package se.microcode.confluence.plugin.base.picasa;
 
-import com.atlassian.confluence.plugin.webresource.ConfluenceWebResourceManager;
-import com.atlassian.confluence.renderer.radeox.macros.MacroUtils;
-import com.atlassian.confluence.util.velocity.VelocityUtils;
-import com.atlassian.plugin.webresource.WebResourceManager;
 import se.microcode.google.picasa.AlbumEntry;
 import se.microcode.google.picasa.PhotoEntry;
 
@@ -42,8 +38,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class GalleryHelper
 {

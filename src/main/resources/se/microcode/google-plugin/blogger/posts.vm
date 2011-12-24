@@ -8,7 +8,7 @@
 #if ($post.images.size() > 0)
 <p>
 #foreach ($image in $post.images)
-<a href="$image.url"><img src="$image.thumb" width="$width"/>
+<a href="$image.url"><img src="$image.thumb" width="$width"/></a>
 #end
 </p>
 #end

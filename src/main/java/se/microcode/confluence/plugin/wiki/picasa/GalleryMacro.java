@@ -29,7 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
  */
 
-package se.microcode.confluence.plugin.picasa;
+package se.microcode.confluence.plugin.wiki.picasa;
 
 import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.plugin.webresource.WebResourceManager;
@@ -40,25 +40,21 @@ import com.atlassian.renderer.v2.RenderMode;
 import com.atlassian.renderer.RenderContext;
 import com.atlassian.confluence.renderer.PageContext;
 import com.atlassian.confluence.pages.Page;
-import com.atlassian.cache.CacheFactory;
 import com.atlassian.cache.Cache;
 
 import com.atlassian.confluence.renderer.radeox.macros.MacroUtils;
 import com.atlassian.confluence.util.velocity.VelocityUtils;
 
-import com.atlassian.spring.container.ContainerManager;
-
-import com.opensymphony.webwork.ServletActionContext;
-import javax.servlet.http.HttpServletRequest;
-
+import se.microcode.base.ArgumentParser;
 import se.microcode.confluence.plugin.PluginHelper;
+import se.microcode.confluence.plugin.base.picasa.GalleryHelper;
+import se.microcode.confluence.plugin.base.picasa.GalleryMacroArguments;
 import se.microcode.google.picasa.*;
 
 import java.util.Map;
 import java.util.List;
 import java.lang.Math;
 import java.io.IOException;
-import java.lang.NumberFormatException;
 import java.lang.Integer;
 
 public class GalleryMacro extends BaseMacro
@@ -73,11 +69,6 @@ public class GalleryMacro extends BaseMacro
         return false;
     }
 
-    public static final String PICASAUSER_PARAM = "user";
-    public static final String MAXENTRIES_PARAM = "pageSize";
-    public static final String IMAGESIZE_PARAM = "imageSize";
-    public static final String THUMBNAILS_PARAM = "thumbnails";
-
     private SettingsManager settingsManager;
     private WebResourceManager webResourceManager;
 
@@ -89,86 +80,19 @@ public class GalleryMacro extends BaseMacro
 
     public String execute(Map params, String body, RenderContext renderContext) throws MacroException
     {
-        String picasaUser = (String)params.get(PICASAUSER_PARAM);
-        int maxEntries = -1;
-        try
-        {
-            maxEntries = Integer.parseInt((String)params.get(MAXENTRIES_PARAM));
-        }
-        catch (NumberFormatException e)
-        {
-        }
+        GalleryMacroArguments args = (GalleryMacroArguments)ArgumentParser.parse(new GalleryMacroArguments(), params);
 
-        int thumbnailCount = 5;
-        try
-        {
-            thumbnailCount = Integer.parseInt((String)params.get(THUMBNAILS_PARAM));
-        }
-        catch (NumberFormatException e)
-        {
-        }
-
-        int imageSize = 640;
-        try
-        {
-            imageSize = Integer.parseInt((String)params.get(IMAGESIZE_PARAM));
-        }
-        catch (NumberFormatException e)
-        {
-        }
-
-        if (picasaUser == null)
+        if (args.user == null)
         {
             throw new MacroException("No user specified");
         }
 
-        HttpServletRequest request = ServletActionContext.getRequest();
-        String albumId = null;
-        String photoId = null;
-        int pageIndex = 0;
-        int pageId = 0;
-        boolean flushCache = false;
-        if (request != null)
-        {
-            albumId = request.getParameter("album");
-            photoId = request.getParameter("photo");
-
-            try
-            {
-                pageIndex = Integer.parseInt(request.getParameter("page"))-1;
-            }
-            catch (NumberFormatException e)
-            {
-            }
-
-            try
-            {
-                pageId = Integer.parseInt(request.getParameter("pageId"));
-            }
-            catch (NumberFormatException e)
-            {
-            }
-
-            try
-            {
-                flushCache = Boolean.parseBoolean(request.getParameter("flush-cache"));
-            }
-            catch (NumberFormatException e)
-            {
-            }
-        }
-
-        CacheFactory cacheFactory = (CacheFactory)ContainerManager.getComponent("cacheManager");
-        Cache cache = cacheFactory.getCache("se.microcode.confluence.plugin.picasa");
-        if (flushCache)
-        {
-            cache.removeAll();
-        }
+        Cache cache = PluginHelper.getCache("se.microcode.confluence.plugin.picasa");
 
         UserFeed userFeed;
         try
         {
-            userFeed = PicasaHelper.getUserFeed(picasaUser, cache);
+            userFeed = PicasaHelper.getUserFeed(args.user, cache);
         }
         catch (IOException e)
         {
@@ -177,11 +101,11 @@ public class GalleryMacro extends BaseMacro
 
         AlbumFeed albumFeed = null;
         AlbumEntry albumEntry = null;
-        if (albumId != null && (userFeed.albums != null))
+        if (args.album != null && (userFeed.albums != null))
         {
             for (AlbumEntry entry : userFeed.albums)
             {
-                if (entry.id.equals(albumId))
+                if (entry.id.equals(args.album))
                 {
                     albumEntry = entry;
                     break;
@@ -192,7 +116,7 @@ public class GalleryMacro extends BaseMacro
             {
                 try
                 {
-                    albumFeed = PicasaHelper.getAlbumFeed(picasaUser, albumEntry.id, cache);
+                    albumFeed = PicasaHelper.getAlbumFeed(args.user, albumEntry.id, cache);
                 }
                 catch (IOException e)
                 {
@@ -204,15 +128,15 @@ public class GalleryMacro extends BaseMacro
         PhotoEntry photoEntry = null;
         List<PhotoEntry> thumbnails = null;
         int photoIndex = 0;
-        if (photoId != null && albumFeed != null && albumFeed.photos != null)
+        if (args.photo != null && albumFeed != null && albumFeed.photos != null)
         {
             for (int i = 0, n = albumFeed.photos.size(); i != n; ++i)
             {
                 PhotoEntry photo = albumFeed.photos.get(i);
-                if (photoId.equals(photo.id))
+                if (args.photo.equals(photo.id))
                 {
-                    int begin = (int)Math.max(0, i - Math.floor(thumbnailCount/2.0f));
-                    int end = (int)Math.min(albumFeed.photos.size(), i + Math.ceil(thumbnailCount/2.0f));
+                    int begin = (int)Math.max(0, i - Math.floor(args.thumbnails/2.0f));
+                    int end = (int)Math.min(albumFeed.photos.size(), i + Math.ceil(args.thumbnails/2.0f));
 
                     photoEntry = photo;
                     photoIndex = i;
@@ -225,9 +149,9 @@ public class GalleryMacro extends BaseMacro
         StringBuilder builder = new StringBuilder();
         Map context = MacroUtils.defaultVelocityContext();
 
-        if (pageId > 0)
+        if (args.pageId > 0)
         {
-            context.put("baseUrl", "?pageId=" + pageId + "&");
+            context.put("baseUrl", "?pageId=" + args.pageId + "&");
         }
         else
         {
@@ -255,9 +179,9 @@ public class GalleryMacro extends BaseMacro
                 context.put("next", albumFeed.photos.get(photoIndex+1).id);
             }
 
-            context.put("photo", GalleryHelper.buildPhotoEntry(photoEntry, imageSize));
+            context.put("photo", GalleryHelper.buildPhotoEntry(photoEntry, args.imageSize));
             context.put("album", GalleryHelper.buildAlbumEntry(albumEntry));
-            context.put("pageId", pageId);
+            context.put("pageId", args.pageId);
 
             if (thumbnails != null)
             {
@@ -271,18 +195,18 @@ public class GalleryMacro extends BaseMacro
         {
             int begin = 0;
             int end = albumFeed.photos.size();
-            if (maxEntries > 0)
+            if (args.pageSize > 0)
             {
-                context.put("currPage", pageIndex+1);
-                context.put("pageCount", (end+maxEntries-1) / maxEntries);
+                context.put("currPage", args.page+1);
+                context.put("pageCount", (end+args.pageSize-1) / args.pageSize);
 
-                begin = Math.min(end, pageIndex * maxEntries);
-                end = Math.min(end, begin + maxEntries);
+                begin = Math.min(end, args.page * args.pageSize);
+                end = Math.min(end, begin + args.pageSize);
             }
 
             context.put("photos", GalleryHelper.buildPhotoList(albumFeed.photos.subList(begin, end), 1));
             context.put("album", GalleryHelper.buildAlbumEntry(albumEntry));
-            context.put("pageId", pageId);
+            context.put("pageId", args.pageId);
 
             builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/picasa/photos.vm", context));
         }
@@ -290,22 +214,22 @@ public class GalleryMacro extends BaseMacro
         {
             int begin = 0;
             int end = userFeed.albums.size();
-            if (maxEntries > 0)
+            if (args.pageSize > 0)
             {
-                context.put("currPage", Integer.toString(pageIndex+1));
-                context.put("pageCount", (end+maxEntries-1) / maxEntries);
+                context.put("currPage", Integer.toString(args.page+1));
+                context.put("pageCount", (end+args.pageSize-1) / args.pageSize);
 
-                begin = Math.min(end, pageIndex * maxEntries);
-                end = Math.min(end, begin + maxEntries);
+                begin = Math.min(end, args.page * args.pageSize);
+                end = Math.min(end, begin + args.pageSize);
             }
 
-            context.put("albums", GalleryHelper.buildAlbumList(userFeed.albums.subList(begin ,end)));
-            context.put("pageId", pageId);
+            context.put("albums", GalleryHelper.buildAlbumList(userFeed.albums.subList(begin, end)));
+            context.put("pageId", args.pageId);
 
             builder.append(VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/picasa/albums.vm", context));
         }
 
-        builder.append(PluginHelper.createCssFix(webResourceManager, "se.microcode.confluence.plugin.google-plugin:picasa-gallery-resources"));
+//        builder.append(PluginHelper.createCssFix(webResourceManager, "se.microcode.confluence.plugin.google-plugin:picasa-gallery-resources"));
 
         return builder.toString();
     }

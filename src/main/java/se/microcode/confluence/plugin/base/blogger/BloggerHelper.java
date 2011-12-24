@@ -1,7 +1,8 @@
-package se.microcode.confluence.plugin.blogger;
+package se.microcode.confluence.plugin.base.blogger;
 
 import com.atlassian.cache.Cache;
-
+import com.atlassian.confluence.renderer.radeox.macros.MacroUtils;
+import com.atlassian.confluence.util.velocity.VelocityUtils;
 import com.google.api.client.util.DateTime;
 import se.microcode.google.GoogleHelper;
 import se.microcode.google.blogger.Post;
@@ -14,21 +15,21 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class BloggerHelper extends GoogleHelper
+abstract public class BloggerHelper extends GoogleHelper
 {
-    public static List<Map> buildPostFeed(List<Post> posts, boolean extractImages, int widthParam)
+    public List<Map> buildPostFeed(List<Post> posts, ImageStyle imageStyle, int widthParam)
     {
         ArrayList<Map> output = new ArrayList<Map>();
 
         for (Post post : posts)
         {
-            output.add(buildPost(post, extractImages, widthParam));
+            output.add(buildPost(post, imageStyle, widthParam));
         }
 
         return output;
     }
 
-    public static Map buildPost(Post post, boolean extractImages, int widthParam)
+    public Map buildPost(Post post, ImageStyle imageStyle, int widthParam)
     {
         HashMap<String,Object> entry = new HashMap<String,Object>();
 
@@ -37,7 +38,7 @@ public class BloggerHelper extends GoogleHelper
 
         Pattern imagePattern = Pattern.compile("(.*)/s640/(.*)");
 
-        if (extractImages)
+        if (imageStyle != ImageStyle.ON)
         {
             images = new ArrayList<Map>();
 
@@ -89,16 +90,20 @@ public class BloggerHelper extends GoogleHelper
 
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 
-
         entry.put("title", post.title);
         entry.put("timestamp", format.format(new Date(time.value)));
-        entry.put("content", content);
-        entry.put("images", images);
+        entry.put("content", buildContent(content));
+        if (imageStyle != ImageStyle.OFF)
+        {
+            entry.put("images", images);
+        }
 
         return entry;
     }
 
-    public static PostFeed getBlogPosts(String id, String labels[], Cache cache, int timeout) throws IOException
+    abstract public Object buildContent(String content);
+
+    public PostFeed getBlogPosts(String id, String labels[], Cache cache, int timeout) throws IOException
     {
         String query = "";
         if (labels.length > 0)
@@ -113,5 +118,29 @@ public class BloggerHelper extends GoogleHelper
         Url url = Url.relativeToRoot("feeds/" + id + "/posts/default" + query);
 
         return (PostFeed)getFeed(url, cache, PostFeed.class, false, timeout);
+    }
+
+    public String renderPostFeed(PostFeed postFeed, BloggerMacroArguments args)
+    {
+        Map context = MacroUtils.defaultVelocityContext();
+
+        context.put("width", args.width);
+        context.put("timestamp", args.timestamp);
+        context.put("header", args.header);
+
+        List<Post> posts = new ArrayList<Post>(postFeed.posts);
+
+        if (args.count > 0)
+        {
+            posts = posts.subList(0, args.count);
+        }
+
+        if (args.reverse)
+        {
+            Collections.reverse(posts);
+        }
+
+        context.put("posts", buildPostFeed(posts, args.images, args.width));
+        return VelocityUtils.getRenderedTemplate("/se/microcode/google-plugin/blogger/posts.vm", context);
     }
 }

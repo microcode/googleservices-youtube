@@ -29,7 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
  */
 
-package se.microcode.confluence.plugin.youtube;
+package se.microcode.confluence.plugin.base.youtube;
 
 import se.microcode.google.youtube.PlaylistEntry;
 import se.microcode.google.youtube.VideoEntry;

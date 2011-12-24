@@ -4,7 +4,9 @@ import com.atlassian.cache.Cache;
 import com.atlassian.confluence.content.render.xhtml.ConversionContext;
 import com.atlassian.confluence.macro.Macro;
 import com.atlassian.confluence.macro.MacroExecutionException;
+import com.opensymphony.webwork.ServletActionContext;
 import se.microcode.base.ArgumentParser;
+import se.microcode.base.ArgumentResolver;
 import se.microcode.confluence.plugin.PluginHelper;
 import se.microcode.confluence.plugin.base.blogger.BloggerMacroArguments;
 import se.microcode.google.blogger.PostFeed;
@@ -33,7 +35,15 @@ public class BloggerMacro implements Macro
 
     public String execute(Map<String,String> params, String body, ConversionContext conversionContext) throws MacroExecutionException
     {
-        BloggerMacroArguments args = (BloggerMacroArguments) ArgumentParser.parse(new BloggerMacroArguments(), params);
+        BloggerMacroArguments args = (BloggerMacroArguments) ArgumentParser.parse(new BloggerMacroArguments(), params, new ArgumentResolver()
+            {
+                @Override
+                public String get(String s)
+                {
+                    return ServletActionContext.getRequest().getParameter(s);
+                }
+            });
+
 
         if (args.id == null)
         {

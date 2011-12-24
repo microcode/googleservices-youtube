@@ -37,7 +37,9 @@ import com.atlassian.renderer.RenderContext;
 import com.atlassian.renderer.v2.RenderMode;
 import com.atlassian.renderer.v2.macro.BaseMacro;
 import com.atlassian.renderer.v2.macro.MacroException;
+import com.opensymphony.webwork.ServletActionContext;
 import se.microcode.base.ArgumentParser;
+import se.microcode.base.ArgumentResolver;
 import se.microcode.confluence.plugin.PluginHelper;
 import se.microcode.confluence.plugin.base.blogger.BloggerMacroArguments;
 import se.microcode.google.blogger.PostFeed;
@@ -68,7 +70,15 @@ public class BloggerMacro extends BaseMacro
 
     public String execute(Map params, String body, RenderContext renderContext) throws MacroException
     {
-        BloggerMacroArguments args = (BloggerMacroArguments)ArgumentParser.parse(new BloggerMacroArguments(), params);
+        BloggerMacroArguments args = (BloggerMacroArguments)ArgumentParser.parse(new BloggerMacroArguments(), params, new ArgumentResolver()
+            {
+                @Override
+                public String get(String s)
+                {
+                    return ServletActionContext.getRequest().getParameter(s);
+                }
+            });
+
 
         if (args.id == null)
         {

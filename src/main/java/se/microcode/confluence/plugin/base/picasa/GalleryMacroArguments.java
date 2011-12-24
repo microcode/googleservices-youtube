@@ -17,12 +17,12 @@ public class GalleryMacroArguments
     public int imageSize;
     public int thumbnails;
 
-    @Argument(name = "album", source = ArgumentSource.SERVLET_REQUEST)
+    @Argument(name = "album", source = ArgumentSource.EXTERNAL)
     public String album;
-    @Argument(name = "photo", source = ArgumentSource.SERVLET_REQUEST)
+    @Argument(name = "photo", source = ArgumentSource.EXTERNAL)
     public String photo;
-    @Argument(name = "page", source = ArgumentSource.SERVLET_REQUEST)
+    @Argument(name = "page", source = ArgumentSource.EXTERNAL)
     public int page;
-    @Argument(name = "pageId", source = ArgumentSource.SERVLET_REQUEST)
+    @Argument(name = "pageId", source = ArgumentSource.EXTERNAL)
     public int pageId;
 }

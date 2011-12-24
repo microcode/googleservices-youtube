@@ -44,7 +44,9 @@ import com.atlassian.renderer.RenderContext;
 import com.atlassian.renderer.v2.RenderMode;
 import com.atlassian.renderer.v2.macro.MacroException;
 import com.atlassian.spring.container.ContainerManager;
+import com.opensymphony.webwork.ServletActionContext;
 import se.microcode.base.ArgumentParser;
+import se.microcode.base.ArgumentResolver;
 import se.microcode.confluence.plugin.PluginHelper;
 import se.microcode.confluence.plugin.base.picasa.GalleryExcerptsMacroArguments;
 import se.microcode.confluence.plugin.base.picasa.GalleryHelper;
@@ -80,7 +82,15 @@ public class GalleryExcerptsMacro extends BaseMacro
 
     public String execute(Map params, String body, RenderContext renderContext) throws MacroException
     {
-        GalleryExcerptsMacroArguments args = (GalleryExcerptsMacroArguments) ArgumentParser.parse(new GalleryExcerptsMacroArguments(), params);
+        GalleryExcerptsMacroArguments args = (GalleryExcerptsMacroArguments) ArgumentParser.parse(new GalleryExcerptsMacroArguments(), params, new ArgumentResolver()
+            {
+                @Override
+                public String get(String s)
+                {
+                    return ServletActionContext.getRequest().getParameter(s);
+                }
+            });
+
         String url = null;
 
         if (args.page != null)

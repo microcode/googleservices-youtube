@@ -17,12 +17,12 @@ public class PlaylistMacroArguments
     public int thumbnails;
     public boolean reverse;
 
-    @Argument(name = "playlist", source = ArgumentSource.SERVLET_REQUEST)
+    @Argument(name = "playlist", source = ArgumentSource.EXTERNAL)
     public String playlist;
-    @Argument(name = "video", source = ArgumentSource.SERVLET_REQUEST)
+    @Argument(name = "video", source = ArgumentSource.EXTERNAL)
     public String video;
-    @Argument(name = "pageIndex", source = ArgumentSource.SERVLET_REQUEST)
+    @Argument(name = "pageIndex", source = ArgumentSource.EXTERNAL)
     public int pageIndex;
-    @Argument(name = "pageId", source = ArgumentSource.SERVLET_REQUEST)
+    @Argument(name = "pageId", source = ArgumentSource.EXTERNAL)
     public int pageId;
 }

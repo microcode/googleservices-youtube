@@ -44,7 +44,9 @@ import com.atlassian.cache.Cache;
 import com.atlassian.confluence.renderer.radeox.macros.MacroUtils;
 import com.atlassian.confluence.util.velocity.VelocityUtils;
 
+import com.opensymphony.webwork.ServletActionContext;
 import se.microcode.base.ArgumentParser;
+import se.microcode.base.ArgumentResolver;
 import se.microcode.confluence.plugin.PluginHelper;
 import se.microcode.confluence.plugin.base.youtube.PlaylistHelper;
 import se.microcode.confluence.plugin.base.youtube.PlaylistMacroArguments;
@@ -80,7 +82,15 @@ public class PlaylistMacro extends BaseMacro
 
     public String execute(Map params, String body, RenderContext renderContext) throws MacroException
     {
-        PlaylistMacroArguments args = (PlaylistMacroArguments) ArgumentParser.parse(new PlaylistMacroArguments(), params);
+        PlaylistMacroArguments args = (PlaylistMacroArguments) ArgumentParser.parse(new PlaylistMacroArguments(), params, new ArgumentResolver()
+            {
+                @Override
+                public String get(String s)
+                {
+                    return ServletActionContext.getRequest().getParameter(s);
+                }
+            });
+
         if (args.user == null)
         {
             throw new MacroException("No user specified");

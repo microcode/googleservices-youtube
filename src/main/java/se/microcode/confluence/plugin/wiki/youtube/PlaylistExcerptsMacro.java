@@ -12,7 +12,9 @@ import com.atlassian.renderer.RenderContext;
 import com.atlassian.renderer.v2.RenderMode;
 import com.atlassian.renderer.v2.macro.BaseMacro;
 import com.atlassian.renderer.v2.macro.MacroException;
+import com.opensymphony.webwork.ServletActionContext;
 import se.microcode.base.ArgumentParser;
+import se.microcode.base.ArgumentResolver;
 import se.microcode.confluence.plugin.PluginHelper;
 import se.microcode.confluence.plugin.base.youtube.PlaylistExcerptsMacroArguments;
 import se.microcode.confluence.plugin.base.youtube.PlaylistHelper;
@@ -56,7 +58,14 @@ public class PlaylistExcerptsMacro extends BaseMacro
 
     public String execute(Map params, String body, RenderContext renderContext) throws MacroException
     {
-        PlaylistExcerptsMacroArguments args = (PlaylistExcerptsMacroArguments) ArgumentParser.parse(new PlaylistExcerptsMacroArguments(), params);
+        PlaylistExcerptsMacroArguments args = (PlaylistExcerptsMacroArguments) ArgumentParser.parse(new PlaylistExcerptsMacroArguments(), params, new ArgumentResolver()
+                {
+                    @Override
+                    public String get(String s)
+                    {
+                        return ServletActionContext.getRequest().getParameter(s);
+                    }
+                });
 
         if (args.user == null)
         {

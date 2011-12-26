@@ -6,7 +6,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>se.microcode.confluence.plugin</groupId>
-    <artifactId>google-plugin</artifactId>
+    <artifactId>googleservices</artifactId>
     <version>1.0</version>
 
     <organization>

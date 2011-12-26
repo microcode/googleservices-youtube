@@ -5,84 +5,273 @@
         <vendor name="${project.organization.name}" url="${project.organization.url}" />
     </plugin-info>
 
-    <resource type="i18n" name="i18n" location="se.microcode.${project.artifactId}.i18n.AtlassianPlugin"/>
-    <resource type="velocity" name="css-fix.vm" location="se/microcode/${project.artifactId}/css-fix.vm"/>
+    <resource type="i18n" name="i18n" location="se/microcode/confluence/plugin/googleservices/i18n"/>
 
     <!-- picasa -->
 
-    <macro name="picasa-gallery" class="${project.groupId}.picasa.GalleryMacro" key="picasa-gallery">
-        <description>Display galleries from Picasa</description>
-        <category name="external-content"/>
-    </macro>
-
-    <xhtml-macro name="Picasa Gallery" class="${project.groupId}.xhtml.picasa.GalleryMacro" key="picasa-gallery-xhtml">
+    <macro name="picasa-gallery" class="${project.groupId}.${project.artifactId}.wiki.picasa.GalleryMacro" key="picasa-gallery">
         <description>Display galleries from Picasa</description>
         <category name="external-content"/>
         <parameters>
             <parameter name="user" type="string" required="true"/>
-            <parameter name="pageSize" type="int" default="-1"/>
-            <parameter name="imageSize" type="int" default="640"/>
+            <parameter name="pageSize" type="int"/>
+            <parameter name="imageSize" type="enum" default="640">
+                <value name="94"/>
+                <value name="110"/>
+                <value name="128"/>
+                <value name="200"/>
+                <value name="220"/>
+                <value name="288"/>
+                <value name="320"/>
+                <value name="400"/>
+                <value name="512"/>
+                <value name="576"/>
+                <value name="640"/>
+                <value name="720"/>
+                <value name="800"/>
+                <value name="912"/>
+                <value name="1024"/>
+                <value name="1152"/>
+                <value name="1280"/>
+                <value name="1440"/>
+                <value name="1600"/>
+            </parameter>
+            <parameter name="albumSize" type="enum" default="144u">
+                <value name="32u"/>
+                <value name="48u"/>
+                <value name="64u"/>
+                <value name="72u"/>
+                <value name="104u"/>
+                <value name="144u"/>
+                <value name="150u"/>
+                <value name="160u"/>
+                <value name="32c"/>
+                <value name="48c"/>
+                <value name="64c"/>
+                <value name="72c"/>
+                <value name="104c"/>
+                <value name="144c"/>
+                <value name="150c"/>
+                <value name="160c"/>
+            </parameter>
             <parameter name="thumbnails" type="int" default="5"/>
+            <parameter name="thumbSize" type="enum" default="72u">
+                <value name="32u"/>
+                <value name="48u"/>
+                <value name="64u"/>
+                <value name="72u"/>
+                <value name="104u"/>
+                <value name="144u"/>
+                <value name="150u"/>
+                <value name="160u"/>
+                <value name="32c"/>
+                <value name="48c"/>
+                <value name="64c"/>
+                <value name="72c"/>
+                <value name="104c"/>
+                <value name="144c"/>
+                <value name="150c"/>
+                <value name="160c"/>
+            </parameter>
+        </parameters>
+    </macro>
+
+    <xhtml-macro name="picasa-gallery" class="${project.groupId}.${project.artifactId}.xhtml.picasa.GalleryMacro" key="picasa-gallery-xhtml">
+        <description>Display galleries from Picasa</description>
+        <category name="external-content"/>
+        <parameters>
+            <parameter name="user" type="string" required="true"/>
+            <parameter name="pageSize" type="int"/>
+            <parameter name="imageSize" type="enum" default="640">
+                <value name="94"/>
+                <value name="110"/>
+                <value name="128"/>
+                <value name="200"/>
+                <value name="220"/>
+                <value name="288"/>
+                <value name="320"/>
+                <value name="400"/>
+                <value name="512"/>
+                <value name="576"/>
+                <value name="640"/>
+                <value name="720"/>
+                <value name="800"/>
+                <value name="912"/>
+                <value name="1024"/>
+                <value name="1152"/>
+                <value name="1280"/>
+                <value name="1440"/>
+                <value name="1600"/>
+            </parameter>
+            <parameter name="albumSize" type="enum" default="144u">
+                <value name="32u"/>
+                <value name="48u"/>
+                <value name="64u"/>
+                <value name="72u"/>
+                <value name="104u"/>
+                <value name="144u"/>
+                <value name="150u"/>
+                <value name="160u"/>
+                <value name="32c"/>
+                <value name="48c"/>
+                <value name="64c"/>
+                <value name="72c"/>
+                <value name="104c"/>
+                <value name="144c"/>
+                <value name="150c"/>
+                <value name="160c"/>
+            </parameter>
+            <parameter name="thumbnails" type="int" default="5"/>
+            <parameter name="thumbSize" type="enum" default="72u">
+                <value name="32u"/>
+                <value name="48u"/>
+                <value name="64u"/>
+                <value name="72u"/>
+                <value name="104u"/>
+                <value name="144u"/>
+                <value name="150u"/>
+                <value name="160u"/>
+                <value name="32c"/>
+                <value name="48c"/>
+                <value name="64c"/>
+                <value name="72c"/>
+                <value name="104c"/>
+                <value name="144c"/>
+                <value name="150c"/>
+                <value name="160c"/>
+            </parameter>
         </parameters>
     </xhtml-macro>
 
-    <macro name="Picasa Gallery Excerpts" class="${project.groupId}.wiki.picasa.GalleryExcerptsMacro" key="picasa-gallery-excerpts">
-        <description>Mini-gallery displaying a set number of items from Picasa</description>
-        <category name="external-content"/>
-    </macro>
-
-    <xhtml-macro name="picasa-gallery-excerpts" class="${project.groupId}.xhtml.picasa.GalleryExcerptsMacro" key="picasa-gallery-excerpts-xhtml">
+    <macro name="picasa-gallery-excerpts" class="${project.groupId}.${project.artifactId}.wiki.picasa.GalleryExcerptsMacro" key="picasa-gallery-excerpts">
         <description>Mini-gallery displaying a set number of items from Picasa</description>
         <category name="external-content"/>
         <parameters>
             <parameter name="user" type="string" required="true"/>
+            <parameter name="type" type="enum" default="photos">
+                <value name="photos"/>
+                <value name="albums"/>
+            </parameter>
             <parameter name="album" type="string"/>
-            <parameter name="maxEntries" type="string" default="5"/>
-            <parameter name="thumbSize" type="int" default="0"/>
             <parameter name="photo" type="string"/>
-            <parameter name="randomize" type="boolean"/>
+            <parameter name="maxEntries" type="string" default="5"/>
+            <parameter name="thumbSize" type="enum" default="144u">
+                <value name="32u"/>
+                <value name="48u"/>
+                <value name="64u"/>
+                <value name="72u"/>
+                <value name="104u"/>
+                <value name="144u"/>
+                <value name="150u"/>
+                <value name="160u"/>
+                <value name="32c"/>
+                <value name="48c"/>
+                <value name="64c"/>
+                <value name="72c"/>
+                <value name="104c"/>
+                <value name="144c"/>
+                <value name="150c"/>
+                <value name="160c"/>
+            </parameter>
+            <parameter name="randomize" type="boolean" default="false"/>
+            <parameter name="page" type="string"/>
+        </parameters>
+    </macro>
+
+    <xhtml-macro name="picasa-gallery-excerpts" class="${project.groupId}.${project.artifactId}.xhtml.picasa.GalleryExcerptsMacro" key="picasa-gallery-excerpts-xhtml">
+        <description>Mini-gallery displaying a set number of items from Picasa</description>
+        <category name="external-content"/>
+        <parameters>
+            <parameter name="user" type="string" required="true"/>
+            <parameter name="type" type="enum" default="photos">
+                <value name="photos"/>
+                <value name="albums"/>
+            </parameter>
+            <parameter name="album" type="string"/>
+            <parameter name="photo" type="string"/>
+            <parameter name="maxEntries" type="string" default="5"/>
+            <parameter name="thumbSize" type="enum" default="144u">
+                <value name="32u"/>
+                <value name="48u"/>
+                <value name="64u"/>
+                <value name="72u"/>
+                <value name="104u"/>
+                <value name="144u"/>
+                <value name="150u"/>
+                <value name="160u"/>
+                <value name="32c"/>
+                <value name="48c"/>
+                <value name="64c"/>
+                <value name="72c"/>
+                <value name="104c"/>
+                <value name="144c"/>
+                <value name="150c"/>
+                <value name="160c"/>
+            </parameter>
+            <parameter name="randomize" type="boolean" default="false"/>
             <parameter name="page" type="string"/>
         </parameters>
     </xhtml-macro>
 
-    <resource type="velocity" name="albums.vm" location="se/microcode/${project.artifactId}/picasa/albums.vm"/>
-    <resource type="velocity" name="photos.vm" location="se/microcode/${project.artifactId}/picasa/photos.vm"/>
-    <resource type="velocity" name="photo.vm" location="se/microcode/${project.artifactId}/picasa/photo.vm"/>
-    <resource type="velocity" name="photos-excerpts.vm" location="se/microcode/${project.artifactId}/picasa/photos-excerpts.vm"/>
-    <resource type="velocity" name="albums-excerpts.vm" location="se/microcode/${project.artifactId}/picasa/albums-excerpts.vm"/>
+    <resource type="velocity" name="albums.vm" location="se/microcode/confluence/plugin/googleservices/picasa/albums.vm"/>
+    <resource type="velocity" name="photos.vm" location="se/microcode/confluence/plugin/googleservices/picasa/photos.vm"/>
+    <resource type="velocity" name="photo.vm" location="se/microcode/confluence/plugin/googleservices/picasa/photo.vm"/>
+    <resource type="velocity" name="photos-excerpts.vm" location="se/microcode/confluence/plugin/googleservices/picasa/photos-excerpts.vm"/>
+    <resource type="velocity" name="albums-excerpts.vm" location="se/microcode/confluence/plugin/googleservices/picasa/albums-excerpts.vm"/>
 
     <web-resource key="picasa-gallery-resources">
-        <resource type="download" name="style.css" location="se/microcode/${project.artifactId}/picasa/style.css">
+        <resource type="download" name="style.css" location="se/microcode/confluence/plugin/googleservices/picasa/style.css">
             <property key="content-type" value="text/css"/>
         </resource>
 
-        <resource type="download" name="images/" location="se/microcode/${project.artifactId}/picasa/images/"/>
+        <resource type="download" name="images/" location="se/microcode/confluence/plugin/googleservices/picasa/images/"/>
     </web-resource>
 
     <!-- youtube -->
 
-    <macro name="Youtube Playlists" class="${project.groupId}.wiki.youtube.PlaylistMacro" key="youtube-playlists">
-        <description>Display playlists from Youtube</description>
-    </macro>
-
-    <macro name="Youtube Playlist Excerpts" class="${project.groupId}.wiki.youtube.PlaylistExcerptsMacro" key="youtube-playlist-excerpts">
-        <description>Mini display of youtube videos (inlined)</description>
-    </macro>
-
-    <xhtml-macro name="Youtube Playlists" class="${project.groupId}.xhtml.youtube.PlaylistMacro" key="youtube-playlists-xhtml">
+    <macro name="youtube-playlists" class="${project.groupId}.${project.artifactId}.wiki.youtube.PlaylistMacro" key="youtube-playlists">
         <description>Display playlists from Youtube</description>
         <parameters>
             <parameter name="user" type="string" required="true"/>
-            <parameter name="pageSize" type="int" default="-1"/>
+            <parameter name="pageSize" type="int"/>
+            <parameter name="thumbnails" type="int" default="5"/>
+            <parameter name="reverse" type="boolean" default="false"/>
+        </parameters>
+    </macro>
+
+    <xhtml-macro name="youtube-playlists" class="${project.groupId}.${project.artifactId}.xhtml.youtube.PlaylistMacro" key="youtube-playlists-xhtml">
+        <description>Display playlists from Youtube</description>
+        <parameters>
+            <parameter name="user" type="string" required="true"/>
+            <parameter name="pageSize" type="int"/>
             <parameter name="thumbnails" type="int" default="5"/>
             <parameter name="reverse" type="boolean" default="false"/>
         </parameters>
     </xhtml-macro>
 
-    <xhtml-macro name="Youtube Playlist Excerpts" class="${project.groupId}.xhtml.youtube.PlaylistExcerptsMacro" key="youtube-playlist-excerpts-xhtml">
+    <macro name="youtube-playlist-excerpts" class="${project.groupId}.${project.artifactId}.wiki.youtube.PlaylistExcerptsMacro" key="youtube-playlist-excerpts">
         <description>Mini display of youtube videos (inlined)</description>
         <parameters>
             <parameter name="user" type="string" required="true"/>
+            <parameter name="display" type="enum" default="playlists">
+                <value name="videos"/>
+                <value name="playlists"/>
+            </parameter>
+            <parameter name="playlist" type="string"/>
+            <parameter name="maxEntries" type="int" default="5"/>
+            <parameter name="randomize" type="boolean"/>
+            <parameter name="page" type="string"/>
+        </parameters>
+    </macro>
+
+    <xhtml-macro name="youtube-playlist-excerpts" class="${project.groupId}.${project.artifactId}.xhtml.youtube.PlaylistExcerptsMacro" key="youtube-playlist-excerpts-xhtml">
+        <description>Mini display of youtube videos (inlined)</description>
+        <parameters>
+            <parameter name="user" type="string" required="true"/>
+            <parameter name="display" type="enum" default="playlists">
+                <value name="videos"/>
+                <value name="playlists"/>
+            </parameter>
             <parameter name="playlist" type="string"/>
             <parameter name="maxEntries" type="int" default="5"/>
             <parameter name="randomize" type="boolean"/>
@@ -90,45 +279,74 @@
         </parameters>
     </xhtml-macro>
 
-    <resource type="velocity" name="playlists.vm" location="se/microcode/${project.artifactId}/youtube/playlists.vm"/>
-    <resource type="velocity" name="playlist.vm" location="se/microcode/${project.artifactId}/youtube/playlist.vm"/>
-    <resource type="velocity" name="playlist-excerpts.vm" location="se/microcode/${project.artifactId}/youtube/playlist-excerpts.vm"/>
-    <resource type="velocity" name="playlists-excerpts.vm" location="se/microcode/${project.artifactId}/youtube/playlists-excerpts.vm"/>
+    <resource type="velocity" name="playlists.vm" location="se/microcode/confluence/plugin/googleservices/youtube/playlists.vm"/>
+    <resource type="velocity" name="playlist.vm" location="se/microcode/confluence/plugin/googleservices/youtube/playlist.vm"/>
+    <resource type="velocity" name="playlist-excerpts.vm" location="se/microcode/confluence/plugin/googleservices/youtube/playlist-excerpts.vm"/>
+    <resource type="velocity" name="playlists-excerpts.vm" location="se/microcode/confluence/plugin/googleservices/youtube/playlists-excerpts.vm"/>
 
     <web-resource key="youtube-playlist-resources">
-        <resource type="download" name="style.css" location="se/microcode/${project.artifactId}/youtube/style.css">
+        <resource type="download" name="style.css" location="se/microcode/confluence/plugin/googleservices/youtube/style.css">
             <property key="content-type" value="text/css"/>
         </resource>
-        <resource type="download" name="images/" location="se/microcode/${project.artifactId}/youtube/images/"/>
+        <resource type="download" name="images/" location="se/microcode/confluence/plugin/googleservices/youtube/images/"/>
     </web-resource>
 
     <!-- blogger -->
 
-    <macro name="Blogger Posts" class="${project.groupId}.wiki.blogger.BloggerMacro" key="blogger-posts">
-        <description>Display Blogger posts</description>
-        <category name="external-content"/>
-    </macro>
-
-    <xhtml-macro name="Blogger Posts" class="${project.groupId}.xhtml.blogger.BloggerMacro" key="blogger-posts-xhtml">
+    <macro name="blogger-posts" class="${project.groupId}.${project.artifactId}.wiki.blogger.BloggerMacro" key="blogger-posts">
         <description>Display Blogger posts</description>
         <category name="external-content"/>
         <parameters>
             <parameter name="id" type="string"/>
             <parameter name="labels" type="string" multiple="true"/>
+            <parameter name="timestamp" type="boolean" default="false"/>
+            <parameter name="count" type="int" default="0"/>
+            <parameter name="reverse" type="boolean"/>
+            <parameter name="header" type="enum" default="h5">
+                <value name="h1"/>
+                <value name="h2"/>
+                <value name="h3"/>
+                <value name="h4"/>
+                <value name="h5"/>
+                <value name="h6"/>
+            </parameter>
             <parameter name="images" type="enum" default="on">
                 <value name="on"/>
                 <value name="off"/>
                 <value name="gallery"/>
             </parameter>
+            <parameter name="width" type="int" default="320"/>
+            <parameter name="timeout" type="int" default="3600"/>
+        </parameters>
+    </macro>
+
+    <xhtml-macro name="blogger-posts" class="${project.groupId}.${project.artifactId}.xhtml.blogger.BloggerMacro" key="blogger-posts-xhtml">
+        <description>Display Blogger posts</description>
+        <category name="external-content"/>
+        <parameters>
+            <parameter name="id" type="string" required="true"/>
+            <parameter name="labels" type="string" multiple="true"/>
             <parameter name="timestamp" type="boolean" default="false"/>
             <parameter name="count" type="int" default="0"/>
             <parameter name="reverse" type="boolean"/>
-            <parameter name="header" type="string" default="h5"/>
+            <parameter name="header" type="enum" default="h5">
+                <value name="h1"/>
+                <value name="h2"/>
+                <value name="h3"/>
+                <value name="h4"/>
+                <value name="h5"/>
+                <value name="h6"/>
+            </parameter>
+            <parameter name="images" type="enum" default="on">
+                <value name="on"/>
+                <value name="off"/>
+                <value name="gallery"/>
+            </parameter>
             <parameter name="width" type="int" default="320"/>
             <parameter name="timeout" type="int" default="3600"/>
         </parameters>
     </xhtml-macro>
 
-    <resource type="velocity" name="posts.vm" location="se/microcode/${project.artifactId}/blogger/posts.vm"/>
+    <resource type="velocity" name="posts.vm" location="se/microcode/confluence/plugin/googleservices/blogger/posts.vm"/>
 
 </atlassian-plugin>

@@ -1,0 +1,15 @@
+#requireResource("se.microcode.confluence.plugin.googleservices:picasa-gallery-resources")
+#if ($url)
+#if ($url.contains("?"))
+#set ($url = $url + "&")
+#else
+#set ($url = $url + "?")
+#end
+#end
+#foreach ($album in $albums)
+<div class="se-microcode_picasa-gallery-wrapper">
+<div class="se-microcode_picasa-gallery-cover"><a href="${url}album=$album.id"><img src="$album.image"/></a></div>
+<div class="se-microcode_picasa-gallery-title"><a href="${url}album=$album.id">$album.title</a></div>
+<div class="se-microcode_picasa-gallery-count">$action.getText("se.microcode.confluence.plugin.googleservices.picasa.photos", [$album.count])</div>
+</div>
+#end

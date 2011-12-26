@@ -53,10 +53,12 @@ public class PicasaHelper extends GoogleHelper
         return (UserFeed)getFeed(url, cache, UserFeed.class);
     }
 
-    public static AlbumFeed getAlbumFeed(String user, String albumId, Cache cache) throws IOException
+    public static AlbumFeed getAlbumFeed(String user, String albumId, String imageSize, String thumbSize, Cache cache) throws IOException
     {
         Url url = Url.relativeToRoot("feed/api/user/" + user + "/albumid/" + albumId);
         url.kinds = "photo";
+        url.imgmax = imageSize;
+        url.thumbsize = thumbSize;
 
         return (AlbumFeed)getFeed(url, cache, AlbumFeed.class);
     }

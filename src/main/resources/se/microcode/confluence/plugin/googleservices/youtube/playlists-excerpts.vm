@@ -1,0 +1,22 @@
+#requireResource("se.microcode.confluence.plugin.googleservices:youtube-playlist-resources")
+#if ($url)
+#if ($url.contains("?"))
+#set ($url = $url + "&")
+#else
+#set ($url = $url + "?")
+#end
+#end
+<div>
+#foreach ($playlist in $playlists)
+<div class="se-microcode_youtube-playlist-wrapper">
+#if ($url)
+<div class="se-microcode_youtube-playlist-cover"><a href="${url}playlist=$playlist.id"><img src="$playlist.image"/></a></div>
+<div class="se-microcode_youtube-playlist-title"><a href="${url}playlist=$playlist.id">$playlist.title</a></div>
+#else
+<div class="se-microcode_youtube-playlist-cover"><img src="$playlist.image"/></div>
+<div class="se-microcode_youtube-playlist-title">$playlist.title</div>
+#end
+<div class="se-microcode_youtube-playlist-count">$action.getText("se.microcode.confluence.plugin.googleservices.youtube.videos", [$playlist.count])</div>
+</div>
+#end
+</div>

@@ -64,7 +64,7 @@ public class GoogleHelper
     static HttpTransport createTransport()
     {
         GoogleHeaders headers = new GoogleHeaders();
-        headers.setApplicationName("se.microcode.google-plugin/1.0");
+        headers.setApplicationName("se.microcode.googleservices/1.0");
         headers.gdataVersion = "2";
 
         AtomParser parser = new AtomParser();

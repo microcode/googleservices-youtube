@@ -1,0 +1,21 @@
+#requireResource("se.microcode.confluence.plugin.googleservices:youtube-playlist-resources")
+#if ($pageCount && $pageCount > 1)
+<div class="se-microcode_youtube-playlist-pagecount">
+#if ($currPage > 1)
+#set ($prevPage = $currPage - 1)
+<span><a href="${baseUrl}page=$prevPage">$action.getText("se.microcode.confluence.plugin.googleservices.previous")</a>&nbsp;</span>
+#end
+<span>$action.getText("se.microcode.confluence.plugin.googleservices.page", [$currPage, $pageCount])</span>
+#if ($currPage < $pageCount)
+#set ($nextPage = $currPage + 1)
+<span>&nbsp;<a href="${baseUrl}page=$nextPage">$action.getText("se.microcode.confluence.plugin.googleservices.next")</a></span>
+#end
+</div>
+#end
+#foreach ($playlist in $playlists)
+<div class="se-microcode_youtube-playlist-wrapper">
+<div class="se-microcode_youtube-playlist-cover"><a href="${baseUrl}playlist=$playlist.id"><img src="$playlist.image"/></a></div>
+<div class="se-microcode_youtube-playlist-title"><a href="${baseUrl}playlist=$playlist.id">$playlist.title</a></div>
+<div class="se-microcode_youtube-playlist-count">$action.getText("se.microcode.confluence.plugin.googleservices.youtube.videos", [$playlist.count])</div>
+</div>
+#end

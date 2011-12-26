@@ -11,6 +11,12 @@ public class Url extends GoogleUrl
     @Key
     public String kinds;
 
+    @Key
+    public String imgmax;
+
+    @Key
+    public String thumbsize;
+
     public Url(String encodedUrl)
     {
         super(encodedUrl);

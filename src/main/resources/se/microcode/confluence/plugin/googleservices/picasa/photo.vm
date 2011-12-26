@@ -1,0 +1,39 @@
+#requireResource("se.microcode.confluence.plugin.googleservices:picasa-gallery-resources")
+<div class="se-microcode_picasa-gallery-crumbs">
+#if ($title)
+<span><a href="${baseUrl}">$title</a></span>
+#else
+<span><a href="${baseUrl}">$action.getText("se.microcode.confluence.plugin.googleservices.picasa.name")</a></span>
+#end
+<span>&nbsp;&gt;&gt;&nbsp;</span>
+<span><a href="${baseUrl}album=$album.id">$album.title</a></span>
+</div>
+#if ($pageCount > 1)
+<div class="se-microcode_picasa-gallery-pagecount">
+#if ($prev)
+<span><a href="${baseUrl}album=$album.id&amp;photo=$prev">$action.getText("se.microcode.confluence.plugin.googleservices.previous")</a>&nbsp;</span>
+#end
+<span>$action.getText("se.microcode.confluence.plugin.googleservices.picasa.photo", [$currPage,$pageCount])</span>
+#if ($next)
+<span>&nbsp;<a href="${baseUrl}album=$album.id&amp;photo=$next">$action.getText("se.microcode.confluence.plugin.googleservices.next")</a></span>
+#end
+</div>
+#end
+
+<div class="se-microcode_picasa-gallery-photo-full">
+#if ($next)
+<a href="${baseUrl}album=$album.id&amp;photo=$next"><img src="$photo.image"/></a>
+#else
+<img src="$photo.image"/>
+#end
+</div>
+
+<div class="se-microcode_picasa-gallery-thumbnails">
+#foreach ($thumbnail in $thumbnails)
+#if ($thumbnail.id == $photo.id)
+<span class="se-microcode_picasa-gallery-thumbnail-active"><img src="$thumbnail.image"/></span>
+#else
+<span><a href="${baseUrl}album=$album.id&amp;photo=$thumbnail.id"><img src="$thumbnail.image"/></a></span>
+#end
+#end
+</div>

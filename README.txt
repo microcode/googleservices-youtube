@@ -1,24 +1,14 @@
-This is a small plugin for Confluence (tested with 3.4.9) that embeds galleries from Picasa.
+'Google Services' is a confluence plugin (compatible with 3.x / 4.x) that presents data feeds exposed by various Google applications.
 
-Example usage:
+This plugin is licensed under the BSD license, please see LICENSE.txt for more information. 
 
-{picasa-gallery:user=mypicasauser|}
+The current API supported are (with associated macros):
 
-Arguments:
-
-user        - User to gather photo feed from
-pageSize    - Max entries per page (default unlimited)
-imageSize   - Image size for full-sized photos (default: 640)
-thumbnails  - Number of thumbnails to display when viewing a photo full-size (default: 5)
-
-There is also a specialized version for inlining a certain set of photos:
-
-{picasa-gallery-excerpts:user=mypicasauser|album=0123456789}
-
-user        - User to gather photo feed from
-album       - What album to gather the feed from
-maxEntries  - Total number of entries to display
-thumbSize   - Size of thumbnail (either index into thumbnail list or picasa-listed size)
-photo       - Photo to focus thumbnails around
-randomize   - true if feed should be randomized before picking photos to display
-page        - Page containing a {picasa-gallery} macro (enables linking)
+	* Blogger
+		blogger-posts - Publish a list of entries from the Blogger service (useful for live-blogging events)
+	* Picasa
+		picasa-gallery - Display the public gallery from a Picasa / Google+ user
+		pixasa-gallery-excerpts - Display a subset of images from a Picasa / Google+ gallery
+	* Youtube
+		youtube-playlists - Display the public playlist feed from a Youtube user
+		youtube-playlist-excerpts - Display a subset of video / playlist links (with images) from a Youtube user

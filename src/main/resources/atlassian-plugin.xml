@@ -155,7 +155,7 @@
             <parameter name="album" type="string"/>
             <parameter name="photo" type="string"/>
             <parameter name="maxEntries" type="string" default="5"/>
-            <parameter name="thumbSize" type="enum" default="144u">
+            <parameter name="imageSize" type="enum" default="144u">
                 <value name="32u"/>
                 <value name="48u"/>
                 <value name="64u"/>
@@ -172,6 +172,25 @@
                 <value name="144c"/>
                 <value name="150c"/>
                 <value name="160c"/>
+                <value name="94"/>
+                <value name="110"/>
+                <value name="128"/>
+                <value name="200"/>
+                <value name="220"/>
+                <value name="288"/>
+                <value name="320"/>
+                <value name="400"/>
+                <value name="512"/>
+                <value name="576"/>
+                <value name="640"/>
+                <value name="720"/>
+                <value name="800"/>
+                <value name="912"/>
+                <value name="1024"/>
+                <value name="1152"/>
+                <value name="1280"/>
+                <value name="1440"/>
+                <value name="1600"/>
             </parameter>
             <parameter name="randomize" type="boolean" default="false"/>
             <parameter name="page" type="string"/>
@@ -190,7 +209,7 @@
             <parameter name="album" type="string"/>
             <parameter name="photo" type="string"/>
             <parameter name="maxEntries" type="string" default="5"/>
-            <parameter name="thumbSize" type="enum" default="144u">
+            <parameter name="imageSize" type="enum" default="144u">
                 <value name="32u"/>
                 <value name="48u"/>
                 <value name="64u"/>
@@ -207,6 +226,25 @@
                 <value name="144c"/>
                 <value name="150c"/>
                 <value name="160c"/>
+                <value name="94"/>
+                <value name="110"/>
+                <value name="128"/>
+                <value name="200"/>
+                <value name="220"/>
+                <value name="288"/>
+                <value name="320"/>
+                <value name="400"/>
+                <value name="512"/>
+                <value name="576"/>
+                <value name="640"/>
+                <value name="720"/>
+                <value name="800"/>
+                <value name="912"/>
+                <value name="1024"/>
+                <value name="1152"/>
+                <value name="1280"/>
+                <value name="1440"/>
+                <value name="1600"/>
             </parameter>
             <parameter name="randomize" type="boolean" default="false"/>
             <parameter name="page" type="string"/>

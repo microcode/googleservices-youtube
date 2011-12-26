@@ -168,7 +168,7 @@ public class GalleryHelper
 
                 if (galleryContext.albumEntry != null)
                 {
-                    galleryContext.albumFeed = PicasaHelper.getAlbumFeed(args.user, galleryContext.albumEntry.id, null, args.thumbSize, cache);
+                    galleryContext.albumFeed = PicasaHelper.getAlbumFeed(args.user, galleryContext.albumEntry.id, args.imageSize, null, cache);
                 }
 
                 if ((args.photo != null) && (galleryContext.albumFeed != null))

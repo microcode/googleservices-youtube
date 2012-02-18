@@ -273,6 +273,10 @@
             <parameter name="user" type="string" required="true"/>
             <parameter name="pageSize" type="int"/>
             <parameter name="thumbnails" type="int" default="5"/>
+            <parameter name="sort" type="enum" default="off">
+                <value name="off"/>
+                <value name="name"/>
+            </parameter>
             <parameter name="reverse" type="boolean" default="false"/>
         </parameters>
     </macro>
@@ -283,6 +287,10 @@
             <parameter name="user" type="string" required="true"/>
             <parameter name="pageSize" type="int"/>
             <parameter name="thumbnails" type="int" default="5"/>
+            <parameter name="sort" type="enum" default="off">
+                <value name="off"/>
+                <value name="name"/>
+            </parameter>
             <parameter name="reverse" type="boolean" default="false"/>
         </parameters>
     </xhtml-macro>
@@ -299,6 +307,11 @@
             <parameter name="maxEntries" type="int" default="5"/>
             <parameter name="randomize" type="boolean"/>
             <parameter name="page" type="string"/>
+            <parameter name="sort" type="enum" default="off">
+                <value name="off"/>
+                <value name="name"/>
+            </parameter>
+            <parameter name="reverse" type="boolean" default="false"/>
         </parameters>
     </macro>
 
@@ -314,6 +327,11 @@
             <parameter name="maxEntries" type="int" default="5"/>
             <parameter name="randomize" type="boolean"/>
             <parameter name="page" type="string"/>
+            <parameter name="sort" type="enum" default="off">
+                <value name="off"/>
+                <value name="name"/>
+            </parameter>
+            <parameter name="reverse" type="boolean" default="false"/>
         </parameters>
     </xhtml-macro>
 

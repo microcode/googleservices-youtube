@@ -38,6 +38,8 @@ public class PlaylistExcerptsMacroArguments
         maxEntries = 5;
         randomize = false;
         display = DisplayMode.PLAYLISTS;
+        sort = SortMode.OFF;
+        reverse = false;
     }
 
     public String user;
@@ -46,4 +48,6 @@ public class PlaylistExcerptsMacroArguments
     public boolean randomize;
     public String page;
     public DisplayMode display;
+    public SortMode sort;
+    public boolean reverse;
 }

@@ -249,7 +249,13 @@ public class PlaylistHelper
             int begin = 0;
             int end = playlists.size();
 
-            if (!args.reverse)
+            Comparator<PlaylistEntry> comparator = PlaylistSorter.createSorter(args.sort);
+            if (comparator != null)
+            {
+                Collections.sort(playlists, comparator);
+            }
+
+            if (args.reverse)
             {
                 Collections.reverse(playlists);
             }
@@ -285,6 +291,11 @@ public class PlaylistHelper
                     int count = 0;
                     int end = (int)Math.min(videos.size(), 0 + (args.maxEntries - count));
 
+                    if (args.reverse)
+                    {
+                        Collections.reverse(videos);
+                    }
+                    
                     if (args.randomize)
                     {
                         Collections.shuffle(videos);
@@ -309,7 +320,17 @@ public class PlaylistHelper
                     int count = 0;
                     int end = (int)Math.min(playlists.size(), 0 + (args.maxEntries - count));
 
-                    Collections.reverse(playlists);
+                    Comparator<PlaylistEntry> comparator = PlaylistSorter.createSorter(args.sort);
+                    if (comparator != null)
+                    {
+                        Collections.sort(playlists, comparator);
+                    }
+                    
+                    if (args.reverse)
+                    {
+                        Collections.reverse(playlists);
+                    }
+
                     if (args.randomize)
                     {
                         Collections.shuffle(playlists);

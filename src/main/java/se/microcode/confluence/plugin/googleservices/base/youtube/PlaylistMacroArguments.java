@@ -40,12 +40,14 @@ public class PlaylistMacroArguments
     {
         pageSize = -1;
         thumbnails = 5;
+        sort = SortMode.OFF;
         reverse = false;
     }
 
     public String user;
     public int pageSize;
     public int thumbnails;
+    public SortMode sort;
     public boolean reverse;
 
     @Argument(name = "playlist", source = ArgumentSource.EXTERNAL)

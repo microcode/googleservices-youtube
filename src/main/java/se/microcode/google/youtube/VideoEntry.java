@@ -7,5 +7,5 @@ import se.microcode.google.Entry;
 public class VideoEntry extends Entry
 {
     @Key("media:group")
-    public Group group;
+    public VideoGroup group;
 }

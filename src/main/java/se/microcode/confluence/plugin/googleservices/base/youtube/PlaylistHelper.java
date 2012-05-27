@@ -45,22 +45,22 @@ import java.util.*;
 
 public class PlaylistHelper
 {
-    public static List<Map> buildPlaylists(List<PlaylistEntry> playlists)
+    public static List<Map> buildPlaylists(List<PlaylistEntry> playlists, int thumbSize)
     {
         ArrayList<Map> output = new ArrayList<Map>();
 
         for (PlaylistEntry playlist : playlists)
         {
-            output.add(buildPlaylist(playlist));
+            output.add(buildPlaylist(playlist, thumbSize));
         }
 
         return output;
     }
 
-    public static Map buildPlaylist(PlaylistEntry playlist)
+    public static Map buildPlaylist(PlaylistEntry playlist, int thumbSize)
     {
         HashMap<String,String> entry = new HashMap<String,String>();
-        PlaylistSummary summary = new PlaylistSummary(playlist.summary);
+        PlaylistSummary summary = new PlaylistSummary(playlist, thumbSize);
 
         entry.put("id", playlist.id);
         entry.put("title", playlist.title);
@@ -71,28 +71,45 @@ public class PlaylistHelper
         return entry;
     }
 
-    public static List buildVideoList(List<VideoEntry> videos)
+    public static List buildVideoList(List<VideoEntry> videos, int thumbSize)
     {
         ArrayList<Map> output = new ArrayList<Map>();
 
         for (VideoEntry video : videos)
         {
-            output.add(buildVideoEntry(video));
+            output.add(buildVideoEntry(video, thumbSize));
         }
 
         return output;
     }
 
-    public static Map buildVideoEntry(VideoEntry video)
+    public static Map buildVideoEntry(VideoEntry video, int thumbSize)
     {
         HashMap<String,String> entry = new HashMap<String,String>();
 
         entry.put("id", video.group.id);
         entry.put("title", video.title);
-        entry.put("image", "http://i.ytimg.com/vi/" + video.group.id + "/default.jpg");
         entry.put("desc", video.group.description);
         entry.put("credit", video.group.credit);
 
+        Thumbnail active = null;
+        for (Thumbnail thumbnail : video.group.thumbnail)
+        {
+            if (thumbnail.height == thumbSize)
+            {
+                active = thumbnail;
+                break;
+            }
+        }
+
+        if (active != null)
+        {
+            entry.put("image", active.url);
+        }
+        else
+        {
+            entry.put("image", "http://i.ytimg.com/vi/" + video.group.id + "/default.jpg");
+        }
         return entry;
     }
 
@@ -116,7 +133,7 @@ public class PlaylistHelper
             {
                 playlistContext.videoFeed = YoutubeHelper.getVideoFeed(playlistContext.playlistEntry.id, cache);
 
-                PlaylistSummary summary = new PlaylistSummary(playlistContext.playlistEntry.summary);
+                PlaylistSummary summary = new PlaylistSummary(playlistContext.playlistEntry, args.thumbSize);
                 summary.patchVideos(playlistContext.videoFeed.videos);
             }
         }
@@ -214,12 +231,13 @@ public class PlaylistHelper
                 context.put("next", playlistContext.videoFeed.videos.get(playlistContext.videoIndex+1).group.id);
             }
 
-            context.put("video", PlaylistHelper.buildVideoEntry(playlistContext.videoEntry));
-            context.put("playlist", PlaylistHelper.buildPlaylist(playlistContext.playlistEntry));
+            context.put("video", PlaylistHelper.buildVideoEntry(playlistContext.videoEntry, args.thumbSize));
+            context.put("playlist", PlaylistHelper.buildPlaylist(playlistContext.playlistEntry, args.thumbSize));
+            context.put("thumbsize", args.thumbSize);
 
             if (playlistContext.thumbnails != null)
             {
-                context.put("thumbnails", PlaylistHelper.buildVideoList(playlistContext.thumbnails));
+                context.put("thumbnails", PlaylistHelper.buildVideoList(playlistContext.thumbnails, args.thumbSize));
             }
 
             return VelocityUtils.getRenderedTemplate("/se/microcode/confluence/plugin/googleservices/youtube/video.vm", context);
@@ -237,8 +255,9 @@ public class PlaylistHelper
                 end = Math.min(end, begin + args.pageSize);
             }
 
-            context.put("videos", PlaylistHelper.buildVideoList(playlistContext.videoFeed.videos.subList(begin, end)));
-            context.put("playlist", PlaylistHelper.buildPlaylist(playlistContext.playlistEntry));
+            context.put("videos", PlaylistHelper.buildVideoList(playlistContext.videoFeed.videos.subList(begin, end), args.thumbSize));
+            context.put("playlist", PlaylistHelper.buildPlaylist(playlistContext.playlistEntry, args.thumbSize));
+            context.put("thumbsize", args.thumbSize);
 
             return VelocityUtils.getRenderedTemplate("/se/microcode/confluence/plugin/googleservices/youtube/playlist.vm", context);
         }
@@ -269,7 +288,9 @@ public class PlaylistHelper
                 end = Math.min(end, begin + args.pageSize);
             }
 
-            context.put("playlists", PlaylistHelper.buildPlaylists(playlists.subList(begin, end)));
+            context.put("thumbsize", args.thumbSize);
+
+            context.put("playlists", PlaylistHelper.buildPlaylists(playlists.subList(begin, end), args.thumbSize));
 
             return VelocityUtils.getRenderedTemplate("/se/microcode/confluence/plugin/googleservices/youtube/playlists.vm", context);
         }
@@ -301,9 +322,10 @@ public class PlaylistHelper
                         Collections.shuffle(videos);
                     }
 
-                    context.put("videos", PlaylistHelper.buildVideoList(videos.subList(begin, end)));
-                    context.put("playlist", PlaylistHelper.buildPlaylist(playlistContext.playlistEntry));
+                    context.put("videos", PlaylistHelper.buildVideoList(videos.subList(begin, end), args.thumbSize));
+                    context.put("playlist", PlaylistHelper.buildPlaylist(playlistContext.playlistEntry, args.thumbSize));
                     context.put("url", url);
+                    context.put("thumbsize", args.thumbSize);
 
                     return VelocityUtils.getRenderedTemplate("/se/microcode/confluence/plugin/googleservices/youtube/playlist-excerpts.vm", context);
                 }
@@ -336,8 +358,9 @@ public class PlaylistHelper
                         Collections.shuffle(playlists);
                     }
 
-                    context.put("playlists", PlaylistHelper.buildPlaylists(playlists.subList(begin, end)));
+                    context.put("playlists", PlaylistHelper.buildPlaylists(playlists.subList(begin, end), args.thumbSize));
                     context.put("url", url);
+                    context.put("thumbsize", args.thumbSize);
 
                     return VelocityUtils.getRenderedTemplate("/se/microcode/confluence/plugin/googleservices/youtube/playlists-excerpts.vm", context);
                 }

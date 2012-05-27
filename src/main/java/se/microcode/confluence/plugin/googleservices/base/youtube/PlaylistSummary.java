@@ -38,6 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.*;
 
+import se.microcode.google.youtube.*;
+
 public class PlaylistSummary
 {
     public class VideoInfo
@@ -51,37 +53,58 @@ public class PlaylistSummary
     public String cover;
     public HashMap<String,VideoInfo> videos;
 
-    public PlaylistSummary(String summary)
+    public PlaylistSummary(PlaylistEntry entry, int thumbSize)
     {
         videos = new HashMap<String,VideoInfo>();
 
-        String lines[] = summary.split("[\r\n]+");
-
-        Pattern pattern = Pattern.compile("(.*)\\|(.*)\\|(.*)\\|(.*)");
-
-        for (String line : lines)
+        String summary = entry.summary;
+        if (summary != null)
         {
-            Matcher m = pattern.matcher(line);
-            if (m.find())
-            {
-                VideoInfo info = new VideoInfo();
-                info.title = m.group(2);
-                info.description = m.group(3);
-                info.category = m.group(4);
+            String lines[] = summary.split("[\r\n]+");
 
-                videos.put(m.group(1), info);
+            Pattern pattern = Pattern.compile("(.*)\\|(.*)\\|(.*)\\|(.*)");
+
+            for (String line : lines)
+            {
+                Matcher m = pattern.matcher(line);
+                if (m.find())
+                {
+                    VideoInfo info = new VideoInfo();
+                    info.title = m.group(2);
+                    info.description = m.group(3);
+                    info.category = m.group(4);
+
+                    videos.put(m.group(1), info);
+                }
+
+                text += line;
+            }
+        }
+
+        Thumbnail activeThumbnail = null;
+        if (entry.group != null && entry.group.thumbnail != null)
+        {
+            for (Thumbnail thumbnail : entry.group.thumbnail)
+            {
+                if (thumbnail.height == thumbSize)
+                {
+                    activeThumbnail = thumbnail;
+                    break;
+                }
             }
 
-            text += line;
+            if (activeThumbnail == null)
+            {
+                if (entry.group.thumbnail.size() > 0)
+                {
+                    activeThumbnail = entry.group.thumbnail.get(0);
+                }
+            }
         }
 
-        if (videos.size() > 0)
+        if (activeThumbnail != null)
         {
-            cover = "http://i.ytimg.com/vi/" + videos.keySet().toArray()[0] + "/default.jpg";
-        }
-        else
-        {
-            cover = "http://i.ytimg.com/vi/QPTALzZ55pM/default.jpg";
+            cover = activeThumbnail.url;
         }
     }
 

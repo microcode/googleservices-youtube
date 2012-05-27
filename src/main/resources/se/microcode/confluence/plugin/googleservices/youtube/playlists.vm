@@ -13,8 +13,8 @@
 </div>
 #end
 #foreach ($playlist in $playlists)
-<div class="se-microcode_youtube-playlist-wrapper">
-<div class="se-microcode_youtube-playlist-cover"><a href="${baseUrl}playlist=$playlist.id"><img src="$playlist.image"/></a></div>
+<div class="se-microcode_youtube-playlist-wrapper-$thumbsize">
+<div class="se-microcode_youtube-playlist-cover-$thumbsize"><a href="${baseUrl}playlist=$playlist.id"><img src="$playlist.image"/></a></div>
 <div class="se-microcode_youtube-playlist-title"><a href="${baseUrl}playlist=$playlist.id">$playlist.title</a></div>
 <div class="se-microcode_youtube-playlist-count">$action.getText("se.microcode.confluence.plugin.googleservices.youtube.videos", [$playlist.count])</div>
 </div>

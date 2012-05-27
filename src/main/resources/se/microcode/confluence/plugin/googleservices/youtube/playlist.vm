@@ -23,6 +23,6 @@
 #foreach ($video in $videos)
 <div class="se-microcode_youtube-playlist-video">
 <a href="${baseUrl}playlist=$playlist.id&amp;video=$video.id"><img src="$video.image" title="$video.desc"/></a>
-<div class="se-microcode_youtube-playlist-video-info"><a href="${baseUrl}playlist=$playlist.id&amp;video=$video.id">$video.title</a></div>
+<div class="se-microcode_youtube-playlist-video-info-$thumbsize"><a href="${baseUrl}playlist=$playlist.id&amp;video=$video.id">$video.title</a></div>
 </div>
 #end

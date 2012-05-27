@@ -1,6 +1,5 @@
-.se-microcode_youtube-playlist-wrapper
+.se-microcode_youtube-playlist-wrapper-90, .se-microcode_youtube-playlist-wrapper-180, .se-microcode_youtube-playlist-wrapper-360
 {
-    width: 168px;
     display:-moz-inline-stack;
     display: inline-block;
     zoom: 1;
@@ -13,16 +12,45 @@
     background-repeat: no-repeat;
 }
 
+.se-microcode_youtube-playlist-wrapper-90
+{
+    width: 168px;
+}
+
+.se-microcode_youtube-playlist-wrapper-180
+{
+    width: 368px;
+}
+
+.se-microcode_youtube-playlist-wrapper-360
+{
+    width: 528px;
+}
+
 .se-microcode_youtube-playlist-crumbs
 {
     font-weight: bold;
 }
 
-.se-microcode_youtube-playlist-cover
+.se-microcode_youtube-playlist-cover-90
 {
     padding-bottom: 0.5em;
     width: 120px;
     height: 90px;
+}
+
+.se-microcode_youtube-playlist-cover-180
+{
+    padding-bottom: 0.5em;
+    width: 320px;
+    height: 180px;
+}
+
+.se-microcode_youtube-playlist-cover-360
+{
+    padding-bottom: 0.5em;
+    width: 480px;
+    height: 360px;
 }
 
 .se-microcode_youtube-playlist-title
@@ -51,10 +79,22 @@
     vertical-align: top;
 }
 
-.se-microcode_youtube-playlist-video-info
+.se-microcode_youtube-playlist-video-info-90
 {
     font-weight: bold;
     width: 120px;
+}
+
+.se-microcode_youtube-playlist-video-info-180
+{
+    font-weight: bold;
+    width: 320px;
+}
+
+.se-microcode_youtube-playlist-video-info-360
+{
+    font-weight: bold;
+    width: 480px;
 }
 
 .se-microcode_youtube-playlist-video-info-full

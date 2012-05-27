@@ -50,4 +50,5 @@ public class PlaylistExcerptsMacroArguments
     public DisplayMode display;
     public SortMode sort;
     public boolean reverse;
+    public int thumbSize;
 }

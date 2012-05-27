@@ -42,6 +42,7 @@ public class PlaylistMacroArguments
         thumbnails = 5;
         sort = SortMode.OFF;
         reverse = false;
+        thumbSize = 90;
     }
 
     public String user;
@@ -49,6 +50,7 @@ public class PlaylistMacroArguments
     public int thumbnails;
     public SortMode sort;
     public boolean reverse;
+    public int thumbSize;
 
     @Argument(name = "playlist", source = ArgumentSource.EXTERNAL)
     public String playlist;

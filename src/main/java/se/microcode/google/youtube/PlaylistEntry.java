@@ -12,6 +12,9 @@ public class PlaylistEntry extends Entry
     @Key("yt:countHint")
     public int countHint;
 
+    @Key("media:group")
+    public PlaylistGroup group;
+
     @Key("yt:playlistId")
     public String id;
 }

@@ -278,6 +278,11 @@
                 <value name="name"/>
             </parameter>
             <parameter name="reverse" type="boolean" default="false"/>
+            <parameter name="thumbSize" type="enum" default="90">
+                <value name="90"/>
+                <value name="180"/>
+                <value name="360"/>
+            </parameter>
         </parameters>
     </macro>
 
@@ -292,6 +297,11 @@
                 <value name="name"/>
             </parameter>
             <parameter name="reverse" type="boolean" default="false"/>
+            <parameter name="thumbSize" type="enum" default="90">
+                <value name="90"/>
+                <value name="180"/>
+                <value name="360"/>
+            </parameter>
         </parameters>
     </xhtml-macro>
 
@@ -312,6 +322,11 @@
                 <value name="name"/>
             </parameter>
             <parameter name="reverse" type="boolean" default="false"/>
+            <parameter name="thumbSize" type="enum" default="90">
+                <value name="90"/>
+                <value name="180"/>
+                <value name="360"/>
+            </parameter>
         </parameters>
     </macro>
 
@@ -332,6 +347,11 @@
                 <value name="name"/>
             </parameter>
             <parameter name="reverse" type="boolean" default="false"/>
+            <parameter name="thumbSize" type="enum" default="90">
+                <value name="90"/>
+                <value name="180"/>
+                <value name="360"/>
+            </parameter>
         </parameters>
     </xhtml-macro>
 

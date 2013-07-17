@@ -40,6 +40,7 @@ public class PlaylistExcerptsMacroArguments
         display = DisplayMode.PLAYLISTS;
         sort = SortMode.OFF;
         reverse = false;
+        thumbSize = 90;
     }
 
     public String user;

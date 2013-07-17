@@ -148,7 +148,7 @@
         <category name="external-content"/>
         <parameters>
             <parameter name="user" type="string" required="true"/>
-            <parameter name="type" type="enum" default="photos">
+            <parameter name="display" type="enum" default="photos">
                 <value name="photos"/>
                 <value name="albums"/>
             </parameter>
@@ -202,7 +202,7 @@
         <category name="external-content"/>
         <parameters>
             <parameter name="user" type="string" required="true"/>
-            <parameter name="type" type="enum" default="photos">
+            <parameter name="display" type="enum" default="photos">
                 <value name="photos"/>
                 <value name="albums"/>
             </parameter>

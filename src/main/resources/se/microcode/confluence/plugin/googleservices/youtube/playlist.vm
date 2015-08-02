@@ -1,4 +1,4 @@
-#requireResource("se.microcode.confluence.plugin.googleservices:youtube-playlist-resources")
+#requireResource("se.microcode.confluence.plugin.googleservices-youtube:youtube-playlist-resources")
 <div class="se-microcode_youtube-playlist-crumbs">
 #if ($title)
 <span><a href="${baseUrl}">$title</a></span>

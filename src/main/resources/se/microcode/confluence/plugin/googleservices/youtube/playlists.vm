@@ -1,4 +1,4 @@
-#requireResource("se.microcode.confluence.plugin.googleservices:youtube-playlist-resources")
+#requireResource("se.microcode.confluence.plugin.googleservices-youtube:youtube-playlist-resources")
 #if ($pageCount && $pageCount > 1)
 <div class="se-microcode_youtube-playlist-pagecount">
 #if ($currPage > 1)

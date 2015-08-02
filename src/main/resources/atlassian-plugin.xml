@@ -9,7 +9,7 @@
 
     <!-- youtube -->
 
-    <macro name="youtube-playlists" class="${project.groupId}.${project.artifactId}.wiki.youtube.PlaylistMacro" key="youtube-playlists">
+    <macro name="youtube-playlists" class="${project.groupId}.googleservices.wiki.youtube.PlaylistMacro" key="youtube-playlists">
         <description>Display playlists from Youtube</description>
         <parameters>
             <parameter name="user" type="string" required="true"/>
@@ -28,7 +28,7 @@
         </parameters>
     </macro>
 
-    <xhtml-macro name="youtube-playlists" class="${project.groupId}.${project.artifactId}.xhtml.youtube.PlaylistMacro" key="youtube-playlists-xhtml">
+    <xhtml-macro name="youtube-playlists" class="${project.groupId}.googleservices.xhtml.youtube.PlaylistMacro" key="youtube-playlists-xhtml">
         <description>Display playlists from Youtube</description>
         <parameters>
             <parameter name="user" type="string" required="true"/>
@@ -47,7 +47,7 @@
         </parameters>
     </xhtml-macro>
 
-    <macro name="youtube-playlist-excerpts" class="${project.groupId}.${project.artifactId}.wiki.youtube.PlaylistExcerptsMacro" key="youtube-playlist-excerpts">
+    <macro name="youtube-playlist-excerpts" class="${project.groupId}.googleservices.wiki.youtube.PlaylistExcerptsMacro" key="youtube-playlist-excerpts">
         <description>Mini display of youtube videos (inlined)</description>
         <parameters>
             <parameter name="user" type="string" required="true"/>
@@ -72,7 +72,7 @@
         </parameters>
     </macro>
 
-    <xhtml-macro name="youtube-playlist-excerpts" class="${project.groupId}.${project.artifactId}.xhtml.youtube.PlaylistExcerptsMacro" key="youtube-playlist-excerpts-xhtml">
+    <xhtml-macro name="youtube-playlist-excerpts" class="${project.groupId}.googleservices.xhtml.youtube.PlaylistExcerptsMacro" key="youtube-playlist-excerpts-xhtml">
         <description>Mini display of youtube videos (inlined)</description>
         <parameters>
             <parameter name="user" type="string" required="true"/>

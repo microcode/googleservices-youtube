@@ -60,13 +60,12 @@ public class PlaylistHelper
     public static Map buildPlaylist(PlaylistEntry playlist, int thumbSize)
     {
         HashMap<String,String> entry = new HashMap<String,String>();
-        PlaylistSummary summary = new PlaylistSummary(playlist, thumbSize);
 
         entry.put("id", playlist.id);
         entry.put("title", playlist.title);
-        entry.put("count", Integer.toString(playlist.countHint));
-        entry.put("image", summary.cover);
-        entry.put("desc", summary.text);
+        entry.put("count", Integer.toString(playlist.count));
+        entry.put("image", playlist.thumbnail);
+        entry.put("desc", playlist.description);
 
         return entry;
     }
@@ -87,28 +86,18 @@ public class PlaylistHelper
     {
         HashMap<String,String> entry = new HashMap<String,String>();
 
-        entry.put("id", video.group.id);
+        entry.put("id", video.id);
         entry.put("title", video.title);
-        entry.put("desc", video.group.description);
-        entry.put("credit", video.group.credit);
+        entry.put("desc", video.description);
+        entry.put("credit", video.credit);
 
-        Thumbnail active = null;
-        for (Thumbnail thumbnail : video.group.thumbnail)
+        if (video.thumbnail != null)
         {
-            if (thumbnail.height == thumbSize)
-            {
-                active = thumbnail;
-                break;
-            }
-        }
-
-        if (active != null)
-        {
-            entry.put("image", active.url);
+            entry.put("image", video.thumbnail);
         }
         else
         {
-            entry.put("image", "http://i.ytimg.com/vi/" + video.group.id + "/default.jpg");
+            entry.put("image", "http://i.ytimg.com/vi/" + video.id + "/default.jpg");
         }
         return entry;
     }
@@ -132,9 +121,6 @@ public class PlaylistHelper
             if (playlistContext.playlistEntry != null)
             {
                 playlistContext.videoFeed = YoutubeHelper.getVideoFeed(playlistContext.playlistEntry.id, cache);
-
-                PlaylistSummary summary = new PlaylistSummary(playlistContext.playlistEntry, args.thumbSize);
-                summary.patchVideos(playlistContext.videoFeed.videos);
             }
         }
 
@@ -143,7 +129,7 @@ public class PlaylistHelper
             for (int i = 0, n = playlistContext.videoFeed.videos.size(); i != n; ++i)
             {
                 VideoEntry video = playlistContext.videoFeed.videos.get(i);
-                if (args.video.equals(video.group.id))
+                if (args.video.equals(video.id))
                 {
                     int begin = (int)Math.max(0, i - Math.floor(args.thumbnails/2.0f));
                     int end = (int)Math.min(playlistContext.videoFeed.videos.size(), i + Math.ceil(args.thumbnails/2.0f));
@@ -224,11 +210,11 @@ public class PlaylistHelper
 
             if (playlistContext.videoIndex > 0)
             {
-                context.put("prev", playlistContext.videoFeed.videos.get(playlistContext.videoIndex-1).group.id);
+                context.put("prev", playlistContext.videoFeed.videos.get(playlistContext.videoIndex-1).id);
             }
             if (playlistContext.videoIndex < playlistContext.videoFeed.videos.size()-1)
             {
-                context.put("next", playlistContext.videoFeed.videos.get(playlistContext.videoIndex+1).group.id);
+                context.put("next", playlistContext.videoFeed.videos.get(playlistContext.videoIndex+1).id);
             }
 
             context.put("video", PlaylistHelper.buildVideoEntry(playlistContext.videoEntry, args.thumbSize));

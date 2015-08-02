@@ -8,8 +8,7 @@ import se.microcode.google.Feed;
 import java.io.IOException;
 import java.util.List;
 
-public class VideoFeed extends Feed
+public class VideoFeed
 {
-    @Key("atom:entry")
     public List<VideoEntry> videos;
 }

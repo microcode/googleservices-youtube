@@ -21,12 +21,7 @@
 #end
 
 <div class="se-microcode_youtube-playlist-video-full">
-<object width="640" height="385">
-	<param name="movie" value="http://www.youtube.com/v/${video.id}&fs=1"></param>
-	<param name="allowFullScreen" value="true"></param>
-	<param name="allowscriptaccess" value="always"></param>
-	<embed src="http://www.youtube.com/v/${video.id}&fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="640" height="385"></embed>
-</object>
+<iframe id="ytplayer" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/${video.id}?autoplay=1&fs=1" frameborder="0"></iframe>
 <div class="se-microcode_youtube-playlist-video-info-full">$action.getText("se.microcode.confluence.plugin.googleservices.youtube.desc", [$video.title, $video.credit])</div>
 <div class="se-microcode_youtube-playlist-video-desc">$video.desc</div>
 </div>

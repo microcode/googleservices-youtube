@@ -4,8 +4,11 @@ import com.google.api.client.util.Key;
 
 import se.microcode.google.Entry;
 
-public class VideoEntry extends Entry
+public class VideoEntry
 {
-    @Key("media:group")
-    public VideoGroup group;
+    public String id;
+    public String title;
+    public String description;
+    public String thumbnail;
+    public String credit;
 }

@@ -4,17 +4,11 @@ import com.google.api.client.util.Key;
 
 import se.microcode.google.Entry;
 
-public class PlaylistEntry extends Entry
+public class PlaylistEntry
 {
-    @Key("atom:summary")
-    public String summary;
-
-    @Key("yt:countHint")
-    public int countHint;
-
-    @Key("media:group")
-    public PlaylistGroup group;
-
-    @Key("yt:playlistId")
     public String id;
+    public String title;
+    public String description;
+    public String thumbnail;
+    public int count;
 }
